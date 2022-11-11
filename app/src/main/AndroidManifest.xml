@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.qiwi_changellenge_it_Amnesia">
         <activity
-            android:name="com.example.qiwi_changellenge_it_amnesia.activity.MainActivity"
+            android:name="com.example.qiwi_changellenge_it_amnesia.ui.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             >

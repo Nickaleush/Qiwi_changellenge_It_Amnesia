@@ -1,7 +1,7 @@
 package com.example.qiwi_changellenge_it_amnesia.di.modules
 
-import com.example.qiwi_changellenge_it_amnesia.activity.MainPresenter
-import com.example.qiwi_changellenge_it_amnesia.activity.MainPresenterImpl
+import com.example.qiwi_changellenge_it_amnesia.ui.activity.MainPresenter
+import com.example.qiwi_changellenge_it_amnesia.ui.activity.MainPresenterImpl
 import com.example.qiwi_changellenge_it_amnesia.di.scopes.MainScope
 import dagger.Module
 

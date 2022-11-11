@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.qiwi_changellenge_it_Amnesia.BuildConfig
-import com.example.qiwi_changellenge_it_amnesia.activity.MainActivity
+import com.example.qiwi_changellenge_it_amnesia.ui.activity.MainActivity
 
 import javax.inject.Inject
 
