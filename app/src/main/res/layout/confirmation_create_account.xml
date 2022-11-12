@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/background_round_corners_top_white"
     >
 
@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="20dp"
         android:lineSpacingExtra="6sp"
         android:lines="3"
-        android:text="@string/ConfirmCodeQRSent"
+        android:text="@string/ConfirmCodeAccountSent"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -26,11 +26,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextConfirmCode"
+        android:id="@+id/editTextConfirmAccountCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/mainColor"
         android:imeOptions="actionDone"
@@ -46,64 +46,63 @@
     </EditText>
 
     <TextView
-        android:id="@+id/textViewRepeatSendCode"
+        android:id="@+id/textViewRepeatSendAccountCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:lineSpacingExtra="6sp"
         android:padding="4dp"
-        android:visibility="visible"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextConfirmCode"
+        app:layout_constraintTop_toBottomOf="@+id/editTextConfirmAccountCode"
         tools:text="Resend confirmation code in: 0:45" />
 
     <Button
-        android:id="@+id/buttonSendConfirmCode"
+        android:id="@+id/buttonSendConfirmAccountCode"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="100dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_button_shape"
         android:text="@string/Confirm"
         android:textColor="@color/white"
         android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode">
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode">
 
     </Button>
 
     <TextView
-        android:id="@+id/tv_wrongCodeError"
+        android:id="@+id/tv_wrongAccountCodeError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:fontFamily="sans-serif"
         android:lineSpacingExtra="6sp"
         android:padding="4dp"
         android:text="@string/INVALID_CODE"
-        android:textColor="@color/mainColor"
+        android:textColor="@color/red"
         android:textSize="16sp"
         android:textStyle="normal"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode"
         />
 
     <TextView
-        android:id="@+id/tv_resendCode"
+        android:id="@+id/tv_resendAccountCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:fontFamily="sans-serif"
         android:lineSpacingExtra="6sp"
         android:padding="4dp"
         android:text="@string/RESEND_CODE"
@@ -114,6 +113,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,11 +22,9 @@ import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.alert_qr_code.*
 import kotlinx.android.synthetic.main.confirmation_create_qr_code.view.*
@@ -56,7 +54,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         super.onViewCreated(view, savedInstanceState)
         presenter.start()
         presenter.view = this
-        sheetView = requireActivity().layoutInflater.inflate(R.layout.country_code_picker, null)
+        sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_qr_code, null)
         btn_createQR.setOnClickListener {
             try {
                 presenter.sendPaymentConfirmation()
@@ -67,9 +65,9 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         }
 
         confirmCode = savedInstanceState?.getString("code").toString()
-        val etTextConfirmCode  = sheetView?.findViewById<EditText>(R.id.et_textConfirmCode)
+        val etTextConfirmCode  = sheetView?.findViewById<EditText>(R.id.editTextConfirmCode)
         val tvWrongCodeError  = sheetView?.findViewById<TextView>(R.id.tv_wrongCodeError)
-        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.tv_repeatSendCode)
+        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.textViewRepeatSendCode)
         if (etTextConfirmCode != null) {
             RxTextView.textChanges(etTextConfirmCode)
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -85,7 +83,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         }
     }
 
-    private fun setupTimer(){
+    private fun setupTimer() {
         if(remainSec > 0) {
             startTime(remainSec)
         }
@@ -97,7 +95,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private  fun startTime(time: Int){
         val tvWrongCodeError  = sheetView?.findViewById<TextView>(R.id.tv_wrongCodeError)
-        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.tv_repeatSendCode)
+        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.textViewRepeatSendCode)
         val tvResendCode  = sheetView?.findViewById<TextView>(R.id.tv_resendCode)
         timer?.cancel()
         timer = Timer()
@@ -119,15 +117,17 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
             timeOutSec--
         }
     }
+
     private fun updateTimeText(time: Int){
-        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.tv_repeatSendCode)
+        val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.textViewRepeatSendCode)
         requireActivity().runOnUiThread { tvRepeatSendCode?.text = String.format("%s %d:%02d", getString(R.string.resend_two_min), time / 60, time % 60)}
     }
+
     private fun showResendAction() {
         requireActivity().runOnUiThread {
-            val etTextConfirmCode  = sheetView?.findViewById<EditText>(R.id.et_textConfirmCode)
+            val etTextConfirmCode  = sheetView?.findViewById<EditText>(R.id.editTextConfirmCode)
             val tvWrongCodeError  = sheetView?.findViewById<TextView>(R.id.tv_wrongCodeError)
-            val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.tv_repeatSendCode)
+            val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.textViewRepeatSendCode)
             val tvResendCode  = sheetView?.findViewById<TextView>(R.id.tv_resendCode)
             etTextConfirmCode?.visibility = View.VISIBLE
             tvWrongCodeError?.visibility = View.GONE
@@ -135,30 +135,31 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
             tvResendCode?.visibility = View.VISIBLE
         }
     }
-    private fun cancelTimer(){
+
+    private fun cancelTimer() {
         remainSec = 0
         timer?.cancel()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         cancelTimer()
     }
-    override fun startConfirmationCreateQRCode(){
-        sheetView = requireActivity().layoutInflater.inflate(R.layout.country_code_picker, null)
+
+    override fun startConfirmationCreateQRCode() {
+
         val mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
         val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         setupTimer()
-        val btnSendConfirmCode  = sheetView.findViewById<Button>(R.id.btn_SendConfirmCode)
+        val btnSendConfirmCode  = sheetView.findViewById<Button>(R.id.buttonSendConfirmCode)
         btnSendConfirmCode.setOnClickListener {
-            val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.et_textConfirmCode)
+            val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.editTextConfirmCode)
             presenter.confirmPayment(Code(confirmCode))
             // запрос
         }
-
-
     }
 
     override fun closeConfirm(){
@@ -231,9 +232,9 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         return combined
     }
     private fun showInvalidCodeError() {
-        val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.et_textConfirmCode)
+        val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.editTextConfirmCode)
         val tvWrongCodeError  = sheetView.findViewById<TextView>(R.id.tv_wrongCodeError)
-        val tvRepeatSendCode  = sheetView.findViewById<TextView>(R.id.tv_repeatSendCode)
+        val tvRepeatSendCode  = sheetView.findViewById<TextView>(R.id.textViewRepeatSendCode)
         val tvResendCode  = sheetView.findViewById<TextView>(R.id.tv_resendCode)
         etTextConfirmCode.background = ResourcesCompat.getDrawable(resources,R.drawable.bottom_line_edit_text_red, null)
         tvWrongCodeError.visibility = View.VISIBLE

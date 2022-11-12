@@ -9,9 +9,13 @@
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/drawable/navigation_icon_back_background.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/drawable/navigation_icon_back_foreground.xml" value="0.29270833333333335" />
+        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/drawable/person_shade_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/drawable/rounded_button_shape.xml" value="0.35648148148148145" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/auth_login.xml" value="0.30409356725146197" />
+        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/alert_qr_code.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/auth_login.xml" value="0.75" />
+        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/confirmation_create_account.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/confirmation_create_qr_code.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/country_code_picker.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/item_layout_country_picker.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Nickaleush/Desktop/qiwi_changellenge_IT_Amnesia/app/src/main/res/layout/item_view_no_result_found.xml" value="0.20520833333333333" />

@@ -29,9 +29,9 @@ class CCPicker {
 
             sheetView.findViewById<RecyclerView>(R.id.rvCountryPicker).layoutManager = LinearLayoutManager(activity)
 
-            var countries = Utils.loadJSONFromAsset(activity)
+            val countries = Utils.loadJSONFromAsset(activity)
 
-            var adapter = CountryPickerAdapter(countries, object : CountryPickerAdapter.OnCountrySelectedListener {
+            val adapter = CountryPickerAdapter(countries, object : CountryPickerAdapter.OnCountrySelectedListener {
                 override fun onCountrySelected(country: Country?) {
                     onCountrySelectedListener.onCountrySelected(country)
                     mBottomSheetDialog.dismiss()

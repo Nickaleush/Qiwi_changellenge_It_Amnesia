@@ -4,6 +4,9 @@
     <string name="Done">Done</string>
     <string name="EnterNumber"> Enter phone number</string>
     <string name="EnterPassword"> Enter Password</string>
+    <string name="EnterName"> Enter Name</string>
+    <string name="NotRegisteredYet">Not with us yet? <br/> Register </string>
+    <string name="Authentication">Authentication</string>
     <string name="SimpleOffers">  <font color='#FF8C00'>Simple and clear about the conditions.</font> </string>
     <string name="ApproveAds"> Agree to receive advertising in accordance with the Offer. Uncheck the box if you don\'t want to receive the ads. </string>
     <string name="Help">  <font color='#FF8C00'>Help</font> </string>
@@ -12,8 +15,9 @@
     <string name="Login">Login</string>
     <string name="CreateQR">Create</string>
     <string name="Confirm">Confirm</string>
-    <string name="ConfirmCodeSent">To create a QR code to pay for the purchase, enter the confirmation code that will be sent to your number</string>
+    <string name="ConfirmCodeQRSent">Enter the code that was sent to your phone number to create a QR code for confirming your purchase</string>
     <string name="INVALID_CODE">Wrong code</string>
+    <string name="ConfirmCodeAccountSent">Enter the code that was sent to your phone number to confirm your account</string>
     <string name="RESEND_CODE">Resend sms-code</string>
     <string name="resend_two_min">Resend confirmation code in:</string>
 </resources>

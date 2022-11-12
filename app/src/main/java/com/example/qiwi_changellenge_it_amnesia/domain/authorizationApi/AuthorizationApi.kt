@@ -7,10 +7,10 @@ import retrofit2.http.POST
 
 interface AuthorizationApi {
 
-    @POST("api/...")
-    fun signUpWithPhone (@Body user: UserToSignUp): Single<Token>
+    @POST("api/auth/sign-up")
+    fun signUpWithPhone (@Body user: UserToSignUp): Single<AccessToken>
 
-    @POST("api/...")
-    fun loginWithPhone(@Body user: UserToLogin): Single<Token>
+    @POST("api/auth/log-in")
+    fun loginWithPhone(@Body user: UserToLogin): Single<AccessToken>
 
 }

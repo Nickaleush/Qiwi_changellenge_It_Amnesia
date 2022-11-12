@@ -13,4 +13,7 @@ interface MainApi {
 
     @POST("api/client/account/payment/confirm")
     fun confirmPayment(@Body code: Code): Single<PaymentToken>
+
+    @POST("api/confirmation/client")
+    fun confirmAccount(@Body code: Code): Single<AccessToken>
 }

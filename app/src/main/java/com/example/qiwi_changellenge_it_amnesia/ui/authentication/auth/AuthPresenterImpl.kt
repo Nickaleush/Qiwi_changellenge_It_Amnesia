@@ -3,6 +3,8 @@ package com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.qiwi_changellenge_it_amnesia.domain.authorizationApi.AuthorizationApi
+import com.example.qiwi_changellenge_it_amnesia.domain.mainApi.MainApi
+import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToLogin
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToSignUp
 import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
@@ -12,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class AuthPresenterImpl @Inject constructor(private val authorizationApi: AuthorizationApi) : BasePresenterImpl<AuthView>(),
+class AuthPresenterImpl @Inject constructor(private val authorizationApi: AuthorizationApi, private val mainApi: MainApi) : BasePresenterImpl<AuthView>(),
     AuthPresenter {
 
     @Inject
@@ -28,8 +30,7 @@ class AuthPresenterImpl @Inject constructor(private val authorizationApi: Author
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
-                sharedPreferences.accessToken = it.accessToken
-                view.showProgressBar()
+                sharedPreferences.accessToken = it.token
                 view.navToUserProfileFragment()
             }, {
                 view.showError(it.message)
@@ -44,8 +45,20 @@ class AuthPresenterImpl @Inject constructor(private val authorizationApi: Author
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
-                sharedPreferences.accessToken = it.accessToken
-                view.showProgressBar()
+                sharedPreferences.accessToken = it.token
+                view.showConfirmationDialog()
+            }, {
+                view.showError(it.message)
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun confirmAccount(code: Code) {
+        mainApi.confirmAccount(code)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                sharedPreferences.accessToken = it.token
                 view.navToUserProfileFragment()
             }, {
                 view.showError(it.message)
