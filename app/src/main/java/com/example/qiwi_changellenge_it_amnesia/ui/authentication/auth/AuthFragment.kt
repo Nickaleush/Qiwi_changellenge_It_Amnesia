@@ -28,6 +28,7 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
 import kotlinx.android.synthetic.main.auth_login.*
+import kotlinx.android.synthetic.main.confirmation_create_account.*
 import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -38,10 +39,19 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-
     private lateinit var sheetView: View
 
     private lateinit var mBottomSheetDialog: BottomSheetDialog
+
+    private lateinit var tvWrongCodeError: TextView
+
+    private lateinit var tvRepeatSendCode: TextView
+
+    private lateinit var tvResendCode: TextView
+
+    private lateinit var etTextConfirmCode: EditText
+
+    private lateinit var buttonSendConfirmAccountCode: Button
 
     override fun createComponent() {
         App.instance
@@ -58,9 +68,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         super.onViewCreated(view, savedInstanceState)
         presenter.start()
         presenter.view = this
-        sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
-        mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
-            countryCodeTextView.setOnClickListener {
+        countryCodeTextView.setOnClickListener {
             CCPicker.showPicker(requireActivity(), object : CountryPickerAdapter.OnCountrySelectedListener {
                 override fun onCountrySelected(country: Country?) {
                     val countryCode = country?.countryCode
@@ -78,6 +86,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             constraintSetSignUpForm.applyTo(auth_fragment_layout)
             passwordEditText.fadeIn( 400).mergeWith(editTextName.fadeIn( 400)).subscribe()
+
         }
 
         buttonDone.setOnClickListener {
@@ -91,22 +100,6 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         }
 
         confirmCodeAccount = savedInstanceState?.getString("code").toString()
-        val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.editTextConfirmAccountCode)
-        val tvWrongCodeError  = sheetView.findViewById<TextView>(R.id.tv_wrongAccountCodeError)
-        val tvRepeatSendCode  = sheetView.findViewById<TextView>(R.id.textViewRepeatSendAccountCode)
-        if (etTextConfirmCode != null) {
-            RxTextView.textChanges(etTextConfirmCode)
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    confirmCodeAccount = it.toString()
-                    if(tvWrongCodeError?.visibility == View.VISIBLE) {
-                        tvWrongCodeError.visibility = View.GONE
-                        tvRepeatSendCode?.visibility = View.VISIBLE
-                        etTextConfirmCode.setBackgroundResource(R.drawable.bottom_line_edit_text)
-                    }
-                }, Throwable::printStackTrace)
-        }
     }
 
     override fun onBackPressed() {
@@ -150,22 +143,38 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         set.connect(R.id.textViewReadOffer, ConstraintSet.TOP, R.id.passwordEditText, ConstraintSet.BOTTOM, 36)
         buttonDone.setOnClickListener {
             presenter.loginWithPhone(UserToLogin(countryCodeTextView.text.toString(),(countryCodeTextView.toString()+phoneEditText)))
-
         }
     }
 
     override fun showConfirmationDialog() {
-            val buttonSendConfirmAccountCode  = sheetView.findViewById<Button>(R.id.buttonSendConfirmAccountCode)
-            mBottomSheetDialog.setContentView(sheetView)
-            mBottomSheetDialog.show()
-            val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
-            mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            setupTimer()
-            buttonSendConfirmAccountCode.setOnClickListener {
-//                val etTextConfirmCode  = sheetView.findViewById<EditText>(R.id.editTextConfirmAccountCode)
-                presenter.confirmAccount(Code(confirmCodeAccount))
-                // запрос
-            }
+        sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
+        mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+        val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
+        mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        tvWrongCodeError  = sheetView.findViewById(R.id.tv_wrongAccountCodeError)
+        etTextConfirmCode  = sheetView.findViewById(R.id.editTextConfirmAccountCode)
+        tvRepeatSendCode  = sheetView.findViewById(R.id.textViewRepeatSendAccountCode)
+        tvResendCode  = sheetView.findViewById(R.id.tv_resendAccountCode)
+        buttonSendConfirmAccountCode  = sheetView.findViewById(R.id.buttonSendConfirmAccountCode)
+
+        setupTimer()
+        buttonSendConfirmAccountCode.setOnClickListener {
+            presenter.confirmAccount(Code(confirmCodeAccount))
+        }
+
+        RxTextView.textChanges(etTextConfirmCode)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                confirmCodeAccount = it.toString()
+                if(tvWrongCodeError.visibility == View.VISIBLE) {
+                    tvWrongCodeError.visibility = View.GONE
+                    tvRepeatSendCode.visibility = View.VISIBLE
+                    etTextConfirmCode.setBackgroundResource(R.drawable.bottom_line_edit_text)
+                }
+            }, Throwable::printStackTrace)
     }
 
     private fun setupTimer() {
@@ -175,19 +184,15 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         else if(remainSeconds == 0) {
             showResendAction()
         }
-
     }
 
-    private  fun startTime(time: Int){
-        val tvWrongCodeError  = sheetView.findViewById<TextView>(R.id.tv_wrongCodeError)
-        val tvRepeatSendCode  = sheetView.findViewById<TextView>(R.id.textViewRepeatSendCode)
-        val tvResendCode  = sheetView.findViewById<TextView>(R.id.tv_resendCode)
+    private  fun startTime(time: Int) {
         timerConfirmAccount?.cancel()
         timerConfirmAccount = Timer()
         timerConfirmAccount?.schedule(ResendCodeTask(time), 0, 1000)
-        tvWrongCodeError?.visibility = View.GONE
-        tvRepeatSendCode?.visibility = View.VISIBLE
-        tvResendCode?.visibility = View.GONE
+        tvWrongCodeError.visibility = View.GONE
+        tvRepeatSendCode.visibility = View.VISIBLE
+        tvResendCode.visibility = View.GONE
     }
 
     inner class ResendCodeTask(private var timeOutSec: Int): TimerTask() {
@@ -204,8 +209,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     }
 
     private fun updateTimeText(time: Int){
-        val tvRepeatSendCode  = sheetView.findViewById<TextView>(R.id.textViewRepeatSendCode)
-        requireActivity().runOnUiThread { tvRepeatSendCode?.text = String.format("%s %d:%02d", getString(R.string.resend_two_min), time / 60, time % 60)}
+        requireActivity().runOnUiThread { tvRepeatSendCode.text = String.format("%s %d:%02d", getString(R.string.resend_two_min), time / 60, time % 60)}
     }
 
     private fun cancelTimer() {
@@ -221,14 +225,10 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
     private fun showResendAction() {
         requireActivity().runOnUiThread {
-            val etTextConfirmCode  = sheetView?.findViewById<EditText>(R.id.editTextConfirmCode)
-            val tvWrongCodeError  = sheetView?.findViewById<TextView>(R.id.tv_wrongCodeError)
-            val tvRepeatSendCode  = sheetView?.findViewById<TextView>(R.id.textViewRepeatSendCode)
-            val tvResendCode  = sheetView?.findViewById<TextView>(R.id.tv_resendCode)
-            etTextConfirmCode?.visibility = View.VISIBLE
-            tvWrongCodeError?.visibility = View.GONE
-            tvRepeatSendCode?.visibility = View.GONE
-            tvResendCode?.visibility = View.VISIBLE
+            etTextConfirmCode.visibility = View.VISIBLE
+            tvWrongCodeError.visibility = View.GONE
+            tvRepeatSendCode.visibility = View.GONE
+            tvResendCode.visibility = View.VISIBLE
         }
     }
 
@@ -251,7 +251,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             changeConstraintsLogin.applyTo(auth_fragment_layout)
             editTextName.visibility = View.GONE
-            editTextName.fadeOut(400).subscribe()
+            editTextName.fadeOut(300).subscribe()
         }
     }
 
