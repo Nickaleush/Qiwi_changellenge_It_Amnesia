@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
 
     >
 
@@ -11,6 +12,18 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/navigation_icon_back_foreground" />
 
+        android:src="@drawable/navigation_icon_back_foreground" />
+    <TextView
+        android:id="@+id/textViewAccessTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="6sp"
+        android:layout_gravity="center_horizontal"
+        android:padding="4dp"
+        android:visibility="visible"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        tools:text="Payment time: 0:45" />
 </LinearLayout>

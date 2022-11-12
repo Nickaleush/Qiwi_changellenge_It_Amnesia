@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.alert_qr_code.*
 import kotlinx.android.synthetic.main.confirmation_create_qr_code.view.*
 import kotlinx.android.synthetic.main.qr_fragment.*
+import kotlinx.coroutines.NonDisposableHandle.parent
 import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -54,6 +56,12 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private lateinit var btnSendConfirmCode: Button
 
+    private lateinit var imageQRCode: ImageView
+
+    private lateinit var tvAccessTime: TextView
+
+//    private lateinit var dialogLayout: View
+
     override fun createComponent() {
         App.instance
             .getAppComponent()
@@ -71,7 +79,6 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         btn_createQR.setOnClickListener {
             try {
                 presenter.sendPaymentConfirmation()
-                bitmap = textToImageEncode("Token")
             } catch (e: WriterException) {
                 e.printStackTrace()
             }
@@ -114,11 +121,31 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     }
 
     private fun updateTimeText(time: Int){
-        requireActivity().runOnUiThread { tvRepeatSendCode.text = String.format("%s %d:%02d", getString(R.string.resend_two_min), time / 60, time % 60)}
+        requireActivity().runOnUiThread {
+            if(alertDialogOpen) {
+                tvAccessTime.text = String.format(
+                    "%s %d:%02d",
+                    getString(R.string.paymentTime),
+                    time / 60,
+                    time % 60
+                )
+            }else {
+                tvRepeatSendCode.text = String.format(
+                    "%s %d:%02d",
+                    getString(R.string.resend_two_min),
+                    time / 60,
+                    time % 60
+                )
+            }
+        }
     }
 
     private fun showResendAction() {
         requireActivity().runOnUiThread {
+//            if(alertDialogOpen){
+//                val parent = requireView().parent as ViewGroup
+//                parent.removeViewInLayout(dialogLayout)
+//            }
             etTextConfirmCode.visibility = View.VISIBLE
             tvWrongCodeError.visibility = View.GONE
             tvRepeatSendCode.visibility = View.GONE
@@ -139,6 +166,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     override fun startConfirmationCreateQRCode() {
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_qr_code, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
+
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
@@ -160,31 +188,40 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 confirmCode = it.toString()
-                if(tvWrongCodeError?.visibility == View.VISIBLE) {
+                if(tvWrongCodeError.visibility == View.VISIBLE) {
                     tvWrongCodeError.visibility = View.GONE
-                    tvRepeatSendCode?.visibility = View.VISIBLE
+                    tvRepeatSendCode.visibility = View.VISIBLE
                     etTextConfirmCode.setBackgroundResource(R.drawable.bottom_line_edit_text)
                 }
             }, Throwable::printStackTrace)
     }
 
-    override fun closeConfirmAndDrawQR(){
+    override fun closeConfirmAndDrawQR(paymentToken: String){
         mBottomSheetDialog.dismiss()
+        remainSec = 15
+        timer?.cancel()
+        bitmap = textToImageEncode(paymentToken)
         drawQRCode()
     }
     private fun drawQRCode() {
-        alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setPositiveButton("OK"){ _, _ ->
+        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.ThemeOverlay_AppCompat_Light)
+
+        alertDialogBuilder.setPositiveButton(R.string.dismiss){ _, _ ->
                 return@setPositiveButton
             }
         val inflater = layoutInflater
-
         val dialogLayout = inflater.inflate(R.layout.alert_qr_code, null)
-        val imageQRCode  = dialogLayout.findViewById<ImageView>(R.id.image_qrCode)
+        imageQRCode = dialogLayout.findViewById(R.id.image_qrCode)
+        tvAccessTime = dialogLayout.findViewById(R.id.textViewAccessTime)
         alertDialogBuilder.setView(dialogLayout)
+        alertDialogBuilder.setCancelable(false)
+
         alertDialogBuilder.show()
-        val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_icon)
-        imageQRCode!!.setImageBitmap(bitmap?.let { mergeBitmaps(overlay, it) })
+
+        alertDialogOpen = true
+        setupTimer()
+        val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_main_icon)
+        imageQRCode.setImageBitmap(bitmap?.let { mergeBitmaps(overlay, it) })
 
     }
 
@@ -218,11 +255,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         val bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_8888)
 
         bitmap.setPixels(pixels, 0, bitMatrixWidth, 0, 0, bitMatrixWidth, bitMatrixHeight)
-        //getting the logo
-        //getting the logo
 
-        //setting bitmap to image view
-        //setting bitmap to image view
         return bitmap
     }
 
@@ -260,5 +293,6 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         private var timer: Timer? = null
         var confirmCode = ""
         const val QRcodeWidth = 1000
+        var alertDialogOpen = false
     }
 }

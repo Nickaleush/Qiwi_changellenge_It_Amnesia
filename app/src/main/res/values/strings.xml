@@ -21,4 +21,6 @@
     <string name="ConfirmCodeAccountSent">Enter the code that was sent to your phone number to confirm your account</string>
     <string name="RESEND_CODE">Resend sms-code</string>
     <string name="resend_two_min">Resend confirmation code in:</string>
+    <string name="paymentTime">Payment time:</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

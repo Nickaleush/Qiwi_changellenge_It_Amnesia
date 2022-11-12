@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import com.example.qiwi_changellenge_it_amnesia.domain.mainApi.MainApi
 import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToLogin
+import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BasePresenterImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePresenterImpl<QRFragmentView>(), QRPresenter {
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override lateinit var view: QRFragmentView
 
@@ -23,6 +27,7 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
+
                 view.startConfirmationCreateQRCode()
             }, {
                 view.showError(it.message)
@@ -37,8 +42,9 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
+                sharedPreferences.accessToken = it.accessToken
                 view.showUserCodeError()
-                view.closeConfirmAndDrawQR()
+                view.closeConfirmAndDrawQR(it.paymentToken)
             }, {
                 view.showError(it.message)
             })

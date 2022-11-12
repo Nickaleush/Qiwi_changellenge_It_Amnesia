@@ -22,4 +22,6 @@
     <string name="RESEND_CODE">Отправить код заново</string>
     <string name="INVALID_CODE">Неправильный код!</string>
     <string name="resend_two_min">Отправить код через:</string>
+    <string name="paymentTime">Время для оплаты:</string>
+    <string name="dismiss">Закрыть</string>
 </resources>

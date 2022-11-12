@@ -6,5 +6,5 @@ interface QRFragmentView: BaseView {
     fun showError(message: String?)
     fun startConfirmationCreateQRCode()
     fun showUserCodeError()
-    fun closeConfirmAndDrawQR()
+    fun closeConfirmAndDrawQR(paymentToken: String)
 }
