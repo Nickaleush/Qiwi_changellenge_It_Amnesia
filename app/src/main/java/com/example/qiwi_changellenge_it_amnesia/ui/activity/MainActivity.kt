@@ -1,6 +1,8 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.activity
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.qiwi_changellenge_it_amnesia.App
@@ -23,11 +25,13 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         navController.graph = mainGraph
         bottomNavigationView = findViewById(R.id.mainBottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
-//        btnOpen.setOnClickListener {
-//            CCPicker.showPicker(this, object : CountryPickerAdapter.OnCountrySelectedListener{
-//                override fun onCountrySelected(country: Country?) { tvSelected.text = country?.countryCode}
-//            })
-//        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.authFragment -> hideBotNav()
+                else -> showBotNav()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -36,6 +40,18 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         } else  {
             super.onBackPressed()
         }
+    }
+
+    private fun hideBotNav() {
+        bottomNavigationView.animate().alpha(0.0f).duration = 300
+        bottomNavigationView.visibility = View.GONE
+    }
+
+    private fun showBotNav() {
+        bottomNavigationView.animate()
+            .alpha(1.0f).duration = 1000
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
     interface OnBackPressedListener {
