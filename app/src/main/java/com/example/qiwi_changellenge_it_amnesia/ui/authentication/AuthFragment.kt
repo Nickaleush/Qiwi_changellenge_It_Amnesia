@@ -1,11 +1,10 @@
-package com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth
+package com.example.qiwi_changellenge_it_amnesia.ui.authentication
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +22,9 @@ import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToLogin
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToSignUp
 import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.CCPicker
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.adapter.CountryPickerAdapter
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model.Country
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.CCPicker
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.adapter.CountryPickerAdapter
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.model.Country
 import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils.fadeIn
 import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils.fadeOut
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -86,7 +85,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         numberFromContactsImageView.setOnClickListener {
             val uri = Uri.parse("content://contacts")
             val intent = Intent(Intent.ACTION_PICK, uri)
-            intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+            intent.type = Phone.CONTENT_TYPE
             startActivityForResult(intent, REQUEST_CODE)
         }
 
@@ -135,6 +134,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         buttonDone.setOnClickListener {
             val phoneNumber = phoneEditText.text.toString().replace(" ", "")
             val finalPhoneNumber = phoneNumber.replace("-", "")
+            pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
             presenter.loginWithPhone(UserToLogin(passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
         }
     }
@@ -148,6 +148,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         buttonDone.setOnClickListener {
             val phoneNumber = phoneEditText.text.toString().replace(" ", "")
             val finalPhoneNumber = phoneNumber.replace("-", "")
+            pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
             presenter.signUpWithPhone(UserToSignUp(editTextName.text.toString(), passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
         }
 
@@ -172,6 +173,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         buttonDone.setOnClickListener {
             val phoneNumber = phoneEditText.text.toString().replace("-","")
             val finalPhoneNumber = phoneNumber.replace(" ", "")
+            pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
             presenter.loginWithPhone(UserToLogin(passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
         }
 

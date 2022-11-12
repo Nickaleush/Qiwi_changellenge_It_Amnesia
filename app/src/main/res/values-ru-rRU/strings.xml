@@ -3,15 +3,22 @@
     <string name="app_name">IT-амнезия</string>
     <string name="Payment">Оплата</string>
     <string name="Done">Далее</string>
+    <string name="QiwiPhoneNumber">Номер QIWI кошелька</string>
+    <string name="DefaultPhoneNumber">+78000000028</string>
+    <string name="LogOut">Выйти из аккаунта</string>
+    <string name="OpenShop">Открыть магазин</string>
     <string name="SimpleOffers">  <font color='#FF8C00'>Просто и понятно об условиях.</font> </string>
     <string name="EnterPassword"> Введите пароль</string>
     <string name="ApproveAds">  Даю согласие на получение рекламы в соответствии с Офертой. Отключите галочку,если не согласны получать рекламу.</string>
     <string name="ReadOffer"> <font color='#FF8C00'>Прочитайте оферту. </font> Входя в кошелек, вы принимаете ее условия.</string>
     <string name="EnterNumber"> Введите номер телефона</string>
     <string name="EnterName"> Введите имя</string>
+    <string name="PaymentHistory">История платежей</string>
+    <string name="Payments">Платежи</string>
     <string name="NotRegisteredYet">Еще не с нами? <br/> Зарегистрироваться</string>
     <string name="Help">  <font color='#FF8C00'>Помощь</font> </string>
     <string name="seven">+7</string>
+    <string name="Profile">Профиль</string>
     <string name="Authentication">Авторизация</string>
     <string name="AuthenticationSuccess">Вы успешно авторизированы!</string>
     <string name="Login">Авторизация</string>

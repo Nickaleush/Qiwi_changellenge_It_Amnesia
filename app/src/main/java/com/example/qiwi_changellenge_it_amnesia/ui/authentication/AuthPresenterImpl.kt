@@ -1,7 +1,6 @@
-package com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth
+package com.example.qiwi_changellenge_it_amnesia.ui.authentication
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.qiwi_changellenge_it_amnesia.domain.authorizationApi.AuthorizationApi
 import com.example.qiwi_changellenge_it_amnesia.domain.mainApi.MainApi
 import com.example.qiwi_changellenge_it_amnesia.domain.models.Code

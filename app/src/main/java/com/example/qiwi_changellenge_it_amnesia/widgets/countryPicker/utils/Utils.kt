@@ -1,7 +1,7 @@
-package com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils
+package com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.utils
 
 import android.content.Context
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model.Country
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.model.Country
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException

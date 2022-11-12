@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth.AuthFragment"
+        android:name="com.example.qiwi_changellenge_it_amnesia.ui.authentication.AuthFragment"
         android:label="AuthFragment"
         tools:layout="@layout/auth_login">
         <action
@@ -27,5 +27,21 @@
         android:id="@+id/profileFragment"
         android:name="com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_paymentsFragment"
+            app:destination="@id/paymentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentsFragment"
+        android:name="com.example.qiwi_changellenge_it_amnesia.ui.payments.PaymentsFragment"
+        android:label="PaymentsFragment"
+        tools:layout="@layout/payments_fragment"
+        />
+    <fragment
+        android:id="@+id/readQRFragment"
+        android:name="com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment"
+        android:label="ReadQRFragment"
+        tools:layout="@layout/read_qr_fragment"
+        />
 </navigation>

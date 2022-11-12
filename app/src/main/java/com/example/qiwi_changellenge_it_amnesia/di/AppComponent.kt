@@ -34,4 +34,8 @@ interface AppComponent {
 
     fun createProfileFragment(): ProfileComponent
 
+    fun createPaymentFragment(): PaymentsComponent
+
+    fun createReadQRFragment(): ReadQRComponent
+
 }

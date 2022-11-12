@@ -1,4 +1,4 @@
-package com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model
+package com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.model
 
 import java.util.*
 
