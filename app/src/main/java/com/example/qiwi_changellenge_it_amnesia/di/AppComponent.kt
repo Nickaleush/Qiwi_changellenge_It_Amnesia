@@ -30,7 +30,7 @@ interface AppComponent {
 
     fun createAuthFragment(): AuthComponent
 
-    fun createQRFragment():QRFragmentComponent
+    fun createQRFragment():QRComponent
 
     fun createProfileFragment(): ProfileComponent
 

@@ -10,4 +10,5 @@
     <string name="ReadOffer"> <font color='#FF8C00'> Read the offer. </font> When you enter the wallet, you agree to its terms.</string>
     <string name="seven">+7</string>
     <string name="Login">Login</string>
+    <string name="CreateQR">Create</string>
 </resources>
