@@ -4,4 +4,5 @@
     <string name="Payment">Оплата</string>
     <string name="seven">+7</string>
     <string name="Login">Авторизация</string>
+    <string name="CreateQR">Сгенерировать QR-Code</string>
 </resources>

@@ -4,7 +4,7 @@ import com.example.qiwi_changellenge_it_amnesia.domain.mainApi.MainApi
 import com.example.qiwi_changellenge_it_amnesia.mvp.BasePresenterImpl
 import javax.inject.Inject
 
-class QRFragmentPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePresenterImpl<QRFragmentView>(), QRFragmentPresenter {
+class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePresenterImpl<QRFragmentView>(), QRPresenter {
 
     override lateinit var view: QRFragmentView
 
