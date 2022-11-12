@@ -7,7 +7,9 @@ import com.example.qiwi_changellenge_it_amnesia.di.AppComponent
 import com.example.qiwi_changellenge_it_amnesia.di.DaggerAppComponent
 
 class App : Application() {
+
     private lateinit var appComponent: AppComponent
+
     override fun onCreate() {
         super.onCreate()
         instance = this
