@@ -89,4 +89,7 @@ dependencies {
     //rxBind
     implementation "com.jakewharton.rxbinding:rxbinding-kotlin:1.0.1"
     implementation "com.jakewharton.rxbinding:rxbinding-recyclerview-v7-kotlin:1.0.1"
+
+    //roundedImageView
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

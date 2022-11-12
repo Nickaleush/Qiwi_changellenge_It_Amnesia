@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">qiwi_changellenge_it_Amnesia</string>
+    <string name="app_name">IT-амнезия</string>
     <string name="Payment">Payment</string>
-    <string name="Done">Done</string>
+    <string name="Done">Next</string>
     <string name="EnterNumber"> Enter phone number</string>
     <string name="EnterPassword"> Enter Password</string>
     <string name="EnterName"> Enter Name</string>
     <string name="NotRegisteredYet">Not with us yet? <br/> Register </string>
     <string name="Authentication">Authentication</string>
+    <string name="AuthenticationSuccess">You have successfully authenticated!</string>
     <string name="SimpleOffers">  <font color='#FF8C00'>Simple and clear about the conditions.</font> </string>
     <string name="ApproveAds"> Agree to receive advertising in accordance with the Offer. Uncheck the box if you don\'t want to receive the ads. </string>
     <string name="Help">  <font color='#FF8C00'>Help</font> </string>
