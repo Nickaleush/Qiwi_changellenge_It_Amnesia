@@ -1,6 +1,11 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +15,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.ViewCompat
+import androidx.navigation.fragment.findNavController
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
@@ -18,21 +23,21 @@ import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToLogin
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToSignUp
 import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
-import com.example.qiwi_changellenge_it_amnesia.ui.qr.QRFragment
 import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.CCPicker
 import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.adapter.CountryPickerAdapter
 import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model.Country
+import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils.fadeIn
+import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils.fadeOut
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jakewharton.rxbinding.widget.RxTextView
-import io.reactivex.Completable
-import io.reactivex.subjects.CompletableSubject
 import kotlinx.android.synthetic.main.auth_login.*
 import kotlinx.android.synthetic.main.confirmation_create_account.*
 import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import android.provider.ContactsContract.CommonDataKinds.Phone
 
 class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
@@ -52,6 +57,8 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     private lateinit var etTextConfirmCode: EditText
 
     private lateinit var buttonSendConfirmAccountCode: Button
+
+    private val REQUEST_CODE = 1
 
     override fun createComponent() {
         App.instance
@@ -80,7 +87,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         numberFromContactsImageView.setOnClickListener {
             val uri = Uri.parse("content://contacts")
             val intent = Intent(Intent.ACTION_PICK, uri)
-            intent.type = Phone.CONTENT_TYPE
+            intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
             startActivityForResult(intent, REQUEST_CODE)
         }
 
@@ -116,7 +123,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     override fun navToUserProfileFragment() {
-        mBottomSheetDialog.dismiss()
+        if (dialogOpened) { mBottomSheetDialog.dismiss() }
         Toast.makeText(requireContext(), getString(R.string.AuthenticationSuccess), Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_authFragment_to_QRFragment)
     }
@@ -170,7 +177,6 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         }
 
         textViewRegister.setOnClickListener {
-
             editTextName.visibility = View.VISIBLE
             passwordEditText.visibility = View.VISIBLE
             val constraintSetSignUpForm = ConstraintSet()
@@ -185,6 +191,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     override fun showConfirmationDialog() {
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
+        dialogOpened = true
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.setCancelable(false)
         mBottomSheetDialog.show()
@@ -283,30 +290,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
                 pickedPhoneNumber = if (number?.take(1).equals("+")) number?.takeLast(13).toString()
                 else number?.takeLast(10).toString()
                 phoneEditText.setText(pickedPhoneNumber)
-                val nameColumnIndex: Int? = cursor?.getColumnIndex(Phone.DISPLAY_NAME)
             }
-        }
-    }
-
-    private fun changeConstraintsBackToLogin(set: ConstraintSet) {
-        set.clear(R.id.passwordEditText, ConstraintSet.TOP)
-        set.connect(R.id.passwordEditText, ConstraintSet.TOP, R.id.phoneEditText, ConstraintSet.BOTTOM, 36)
-        set.connect(R.id.textViewReadOffer, ConstraintSet.TOP, R.id.passwordEditText, ConstraintSet.BOTTOM, 36)
-
-        buttonDone.setOnClickListener {
-            presenter.loginWithPhone(UserToLogin(countryCodeTextView.text.toString(),(countryCodeTextView.toString()+phoneEditText)))
-        }
-
-        textViewRegister.setOnClickListener {
-
-            editTextName.visibility = View.VISIBLE
-            passwordEditText.visibility = View.VISIBLE
-            val constraintSetSignUpForm = ConstraintSet()
-            constraintSetSignUpForm.clone(auth_fragment_layout)
-            changeConstraintsSignUp(constraintSetSignUpForm)
-            TransitionManager.beginDelayedTransition(auth_fragment_layout)
-            constraintSetSignUpForm.applyTo(auth_fragment_layout)
-            passwordEditText.fadeIn( 400).mergeWith(editTextName.fadeIn( 400)).subscribe()
         }
     }
 
@@ -314,5 +298,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         private var remainSeconds = 120
         private var timerConfirmAccount: Timer? = null
         var confirmCodeAccount = ""
+        var pickedPhoneNumber = ""
+        var dialogOpened = false
     }
 }
