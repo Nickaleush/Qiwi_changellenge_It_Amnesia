@@ -11,4 +11,9 @@
     <string name="seven">+7</string>
     <string name="Login">Login</string>
     <string name="CreateQR">Create</string>
+    <string name="Confirm">Confirm</string>
+    <string name="ConfirmCodeSent">To create a QR code to pay for the purchase, enter the confirmation code that will be sent to your number</string>
+    <string name="INVALID_CODE">Wrong code</string>
+    <string name="RESEND_CODE">Resend sms-code</string>
+    <string name="resend_two_min">Resend confirmation code in:</string>
 </resources>

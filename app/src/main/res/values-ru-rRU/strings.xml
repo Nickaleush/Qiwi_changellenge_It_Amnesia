@@ -12,4 +12,9 @@
     <string name="seven">+7</string>
     <string name="Login">Авторизация</string>
     <string name="CreateQR">Сгенерировать QR-Code</string>
+    <string name="Confirm">Подтвердить</string>
+    <string name="ConfirmCodeSent">Для создания QR-кода для оплаты покупки введите код подтверждения, который будет отправлен на ваш номер</string>
+    <string name="RESEND_CODE">Отправить код заново</string>
+    <string name="INVALID_CODE">Неправильный код!</string>
+    <string name="resend_two_min">Отправить код через:</string>
 </resources>
