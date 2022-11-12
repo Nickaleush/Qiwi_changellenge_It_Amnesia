@@ -38,7 +38,7 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
             )
             .subscribe({
                 view.showUserCodeError()
-                view.closeConfirm()
+                view.closeConfirmAndDrawQR()
             }, {
                 view.showError(it.message)
             })

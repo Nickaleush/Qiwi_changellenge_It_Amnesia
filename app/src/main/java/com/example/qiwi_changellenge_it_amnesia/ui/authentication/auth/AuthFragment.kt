@@ -227,7 +227,6 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         else if(remainSeconds == 0) {
             showResendAction()
         }
-
     }
 
     private  fun startTime(time: Int) {
