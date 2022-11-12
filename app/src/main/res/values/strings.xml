@@ -2,7 +2,10 @@
     <string name="app_name">IT-амнезия</string>
     <string name="Payment">Payment</string>
     <string name="Done">Next</string>
+    <string name="LogOut">Log out</string>
     <string name="EnterNumber"> Enter phone number</string>
+    <string name="QiwiPhoneNumber">QIWI wallet number</string>
+    <string name="DefaultPhoneNumber">+78000000028</string>
     <string name="EnterPassword"> Enter Password</string>
     <string name="EnterName"> Enter Name</string>
     <string name="NotRegisteredYet">Not with us yet? <br/> Register </string>
@@ -13,6 +16,7 @@
     <string name="Help">  <font color='#FF8C00'>Help</font> </string>
     <string name="ReadOffer"> <font color='#FF8C00'> Read the offer. </font> When you enter the wallet, you agree to its terms.</string>
     <string name="seven">+7</string>
+    <string name="Profile">Profile</string>
     <string name="Login">Login</string>
     <string name="CreateQR">Create</string>
     <string name="Confirm">Confirm</string>

@@ -1,4 +1,4 @@
-package com.example.qiwi_changellenge_it_amnesia.utils.countryPicker
+package com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker
 
 import android.app.Activity
 import android.view.View
@@ -6,11 +6,11 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qiwi_changellenge_it_Amnesia.R
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.adapter.CountryPickerAdapter
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model.Country
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.adapter.CountryPickerAdapter
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.model.Country
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.utils.Utils
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.utils.Utils
 
 class CCPicker {
 

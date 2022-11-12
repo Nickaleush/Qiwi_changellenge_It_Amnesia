@@ -1,4 +1,4 @@
-package com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.adapter
+package com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qiwi_changellenge_it_Amnesia.R
-import com.example.qiwi_changellenge_it_amnesia.utils.countryPicker.model.Country
+import com.example.qiwi_changellenge_it_amnesia.widgets.countryPicker.model.Country
 
 class CountryPickerAdapter(private var countries:ArrayList<Country>, private var onCountrySelectedListener: OnCountrySelectedListener) :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
