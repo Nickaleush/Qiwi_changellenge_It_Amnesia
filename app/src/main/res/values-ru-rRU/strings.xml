@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">qiwi_changellenge_it_Amnesia</string>
+    <string name="Payment">Оплата</string>
+    <string name="seven">+7</string>
+    <string name="Login">Авторизация</string>
+</resources>

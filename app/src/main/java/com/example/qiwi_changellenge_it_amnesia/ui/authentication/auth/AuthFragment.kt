@@ -32,6 +32,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         presenter.start()
         presenter.view = this
 
+
     }
 
     override fun onBackPressed() {

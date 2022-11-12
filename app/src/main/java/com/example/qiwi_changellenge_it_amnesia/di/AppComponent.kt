@@ -32,4 +32,6 @@ interface AppComponent {
 
     fun createQRFragment():QRFragmentComponent
 
+    fun createProfileFragment(): ProfileComponent
+
 }
