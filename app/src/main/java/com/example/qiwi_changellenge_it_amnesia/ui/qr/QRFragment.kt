@@ -246,7 +246,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         tvResendCode.visibility = View.GONE
     }
     override fun onBackPressed() {
-        requireActivity().onBackPressedDispatcher.onBackPressed()
+        requireActivity().finish()
     }
 
     override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

@@ -1,11 +1,10 @@
-package com.example.qiwi_changellenge_it_amnesia.ui.authentication.auth
+package com.example.qiwi_changellenge_it_amnesia.ui.authentication
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
