@@ -150,6 +150,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
         mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.setCancelable(false)
         mBottomSheetDialog.show()
         val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
