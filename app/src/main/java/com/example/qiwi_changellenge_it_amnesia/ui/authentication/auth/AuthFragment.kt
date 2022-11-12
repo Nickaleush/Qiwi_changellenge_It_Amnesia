@@ -32,7 +32,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.auth_login.*
-import kotlinx.android.synthetic.main.confirmation_create_account.*
 import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -270,6 +269,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
     private fun showResendAction() {
         requireActivity().runOnUiThread {
+            mBottomSheetDialog.setCancelable(true)
             etTextConfirmCode.visibility = View.VISIBLE
             tvWrongCodeError.visibility = View.GONE
             tvRepeatSendCode.visibility = View.GONE

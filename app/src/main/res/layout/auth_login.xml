@@ -75,7 +75,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterPhoneTextView" />
 
-    <EditText
+    <com.example.qiwi_changellenge_it_amnesia.widgets.PhoneWithoutCodeEdit
         android:id="@+id/phoneEditText"
         android:layout_width="0dp"
         android:layout_height="40dp"

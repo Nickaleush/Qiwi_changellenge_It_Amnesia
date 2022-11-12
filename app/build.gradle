@@ -92,4 +92,7 @@ dependencies {
 
     //roundedImageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    // helper for phoneNumber
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.0'
 }
