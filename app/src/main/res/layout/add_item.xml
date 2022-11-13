@@ -12,6 +12,6 @@
         android:hint="@string/SpecifyPrice"
         android:backgroundTint="@color/mainColor"
         android:textColor="@color/black"
-        android:fontFamily="sans-serif-condensed" />
+        />
 
 </LinearLayout>
