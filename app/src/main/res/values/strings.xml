@@ -2,8 +2,14 @@
     <string name="app_name">IT-амнезия</string>
     <string name="Payment">Payment</string>
     <string name="Done">Next</string>
+    <string name="PaymentID">Payment Id</string>
+    <string name="Amount">Amount</string>
+    <string name="Currency">Currency</string>
     <string name="LogOut">Log out</string>
     <string name="EnterNumber"> Enter phone number</string>
+    <string name="ShopName"> Shop name</string>
+    <string name="PurchaserName">Purchaser Name</string>
+    <string name="PaymentTime"> Payment Time</string>
     <string name="QiwiPhoneNumber">QIWI wallet number</string>
     <string name="DefaultPhoneNumber">+78000000028</string>
     <string name="EnterPassword"> Enter Password</string>

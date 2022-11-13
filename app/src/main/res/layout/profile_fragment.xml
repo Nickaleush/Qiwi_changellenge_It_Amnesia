@@ -13,7 +13,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:scaleType="centerCrop"
-        android:elevation="20sp"
         android:background="@drawable/rounded_imageview"
         android:src="@drawable/person_shade_foreground"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +50,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qiwiWalletTextView" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProfile"
+        android:layout_width="0dp"
+        android:layout_height="367dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qiwiPhoneTextView" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/buttonLogOut"
@@ -58,7 +65,9 @@
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="56dp"
-        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,15 +83,6 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProfile"
-        android:layout_width="0dp"
-        android:layout_height="367dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qiwiPhoneTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

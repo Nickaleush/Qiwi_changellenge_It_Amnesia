@@ -221,7 +221,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         alertDialogOpen = true
         setupTimer()
         val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_main_icon)
-        imageQRCode.setImageBitmap(bitmap?.let { mergeBitmaps(overlay, it) })
+        imageQRCode.setImageBitmap(bitmap)
 
     }
 

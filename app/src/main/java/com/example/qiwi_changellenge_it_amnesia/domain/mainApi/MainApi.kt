@@ -16,4 +16,10 @@ interface MainApi {
 
     @POST("api/confirmation/client")
     fun confirmAccount(@Body code: Code): Single<AccessToken>
+
+    @GET("api/payments/purchases")
+    fun getPurchaseList(): Single<ArrayList<Payment>>
+
+    @GET("api/payments/sales")
+    fun getSalesList(): Single<ArrayList<Payment>>
 }

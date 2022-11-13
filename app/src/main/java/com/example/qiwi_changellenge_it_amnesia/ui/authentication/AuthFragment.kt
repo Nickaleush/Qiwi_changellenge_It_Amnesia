@@ -36,6 +36,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import android.provider.ContactsContract.CommonDataKinds.Phone
+import android.view.View.OnFocusChangeListener
 
 class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
@@ -57,6 +58,8 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     private lateinit var buttonSendConfirmAccountCode: Button
 
     private val REQUEST_CODE = 1
+
+    var isKeyboardOpened = false
 
     override fun createComponent() {
         App.instance
@@ -98,7 +101,6 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             constraintSetSignUpForm.applyTo(auth_fragment_layout)
             passwordEditText.fadeIn( 400).mergeWith(editTextName.fadeIn( 400)).subscribe()
-
         }
 
         buttonDone.setOnClickListener {
@@ -112,6 +114,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         }
 
         confirmCodeAccount = savedInstanceState?.getString("code").toString()
+
     }
 
     override fun onBackPressed() {

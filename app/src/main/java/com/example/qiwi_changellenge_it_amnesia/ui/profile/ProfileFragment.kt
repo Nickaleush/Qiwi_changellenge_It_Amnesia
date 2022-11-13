@@ -11,11 +11,16 @@ import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.domain.models.ItemType
 import com.example.qiwi_changellenge_it_amnesia.domain.models.ListItemProfile
+import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
 import com.example.qiwi_changellenge_it_amnesia.ui.authentication.AuthFragment.Companion.pickedPhoneNumber
 import kotlinx.android.synthetic.main.profile_fragment.*
+import javax.inject.Inject
 
 class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private var profileRecyclerViewItems: ArrayList<ListItemProfile> = ArrayList()
 
@@ -32,6 +37,10 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
         menuAdapter = ProfileAdapter(profileRecyclerViewItems, this@ProfileFragment,requireContext())
         recyclerViewProfile.adapter = menuAdapter
         initializeData()
+        buttonLogOut.setOnClickListener {
+            sharedPreferences.accessToken = null
+            findNavController().navigate(R.id.action_profileFragment_to_authFragment)
+        }
     }
 
     override fun createComponent() {

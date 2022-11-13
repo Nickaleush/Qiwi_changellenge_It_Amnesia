@@ -31,7 +31,11 @@
         <action
             android:id="@+id/action_profileFragment_to_paymentsFragment"
             app:destination="@id/paymentsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_authFragment"
+            app:destination="@id/authFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/paymentsFragment"
         android:name="com.example.qiwi_changellenge_it_amnesia.ui.payments.PaymentsFragment"
