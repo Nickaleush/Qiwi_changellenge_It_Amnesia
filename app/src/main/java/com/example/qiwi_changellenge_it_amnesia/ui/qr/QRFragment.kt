@@ -195,7 +195,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     override fun closeConfirmAndDrawQR(paymentToken: String){
         mBottomSheetDialog.dismiss()
-        remainSec = 15
+        remainSec = 120
         timer?.cancel()
         bitmap = textToImageEncode(paymentToken)
         drawQRCode()
