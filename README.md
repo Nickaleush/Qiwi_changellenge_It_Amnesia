@@ -16,5 +16,8 @@
 - Хранение и отображение информации о совершённых платежах
 - Возможность добавления товара с задаваемой пользователем суммой
 
+##Back-end приложения
+- https://github.com/Artemi10/qiwi-hackathon
+
 ## Contact
 Email: nickaleush@mail.ru
