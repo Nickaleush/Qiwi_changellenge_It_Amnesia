@@ -28,8 +28,10 @@ class ReadQRProductAdapter(private val productList: MutableList<Product>, privat
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val v = holder.itemView
         val item = productList[position]
-        v.productName.text = item.amount.toString()
+        v.productName.text = item.amount
         v.productImage.setImageResource(iconList[position])
+        if(position>iconList.size-1) v.productImage.setImageResource(R.drawable.default_product_foreground)
+
     }
 
     interface OnClickListener {

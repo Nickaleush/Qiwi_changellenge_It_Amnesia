@@ -1,12 +1,15 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.readQR
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
@@ -22,6 +25,14 @@ import kotlinx.android.synthetic.main.read_qr_fragment.*
 
 
 class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
+
+    private lateinit var alertDialogBuilder: AlertDialog.Builder
+
+    private lateinit var editTextAddItem: EditText
+
+    private lateinit var buttonSendAddItem: Button
+
+    private lateinit var finalAlertDialog:AlertDialog
 
     override fun createComponent() {
         App.instance
@@ -45,12 +56,27 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
     private fun initRecyclerView() {
         if (this.isVisible) {
             exampleProductsRecyclerView.layoutManager as GridLayoutManager
-            val productList: MutableList<Product> = mutableListOf(Product( 1000),Product(500), Product(1999), Product(7499) )
+            val productList: MutableList<Product> = mutableListOf(Product( "1000"),Product("500"), Product("1999"), Product("7499") )
             val imageListPetTypes = intArrayOf(R.drawable.car_foreground, R.drawable.motorcycle_foreground, R.drawable.rocket_foreground, R.drawable.robot_foreground )
             val adapter = ReadQRProductAdapter(productList,imageListPetTypes)
             exampleProductsRecyclerView.adapter = adapter
             adapter.setOnClickRecyclerListener(object : ReadQRProductAdapter.OnClickListener {
                 override fun onClick(position: Int) {
+                    if (position == 0){
+                        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.ThemeOverlay_AppCompat_Light)
+                        val inflater = layoutInflater
+                        val dialogLayout = inflater.inflate(R.layout.add_item, null)
+                        editTextAddItem = dialogLayout.findViewById(R.id.editTextAddItem)
+                        alertDialogBuilder.setView(dialogLayout)
+                        alertDialogBuilder.setCancelable(false)
+                        buttonSendAddItem = dialogLayout.findViewById(R.id.buttonSendAddItem)
+                        finalAlertDialog = alertDialogBuilder.create()
+                        finalAlertDialog.show()
+                        buttonSendAddItem.setOnClickListener {
+                            productList.add(productList.size, Product(editTextAddItem.text.toString()))
+                            finalAlertDialog.cancel()
+                        }
+                    }
                     amount = productList[position].amount
                     val intent = Intent(requireActivity(), ScanActivity::class.java)
                     startActivity(intent)
@@ -97,6 +123,6 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
     companion object{
         var scanQR = false
         var paymentToken = ""
-        var amount: Long = 0
+        var amount = ""
     }
 }

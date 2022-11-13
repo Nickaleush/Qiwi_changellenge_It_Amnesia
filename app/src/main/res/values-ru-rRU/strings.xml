@@ -7,6 +7,7 @@
     <string name="Payment">Платеж:</string>
     <string name="Product">Product</string>
     <string name="Done">Далее</string>
+    <string name="Add">Добавить</string>
     <string name="PaymentID">Id платежа</string>
     <string name="Amount">Сумма:</string>
     <string name="Currency">Валюта</string>
@@ -53,4 +54,5 @@
     <string name="invalid_QR_code">Неверный QR-code</string>
     <string name="openShop">Создайте магазин</string>
     <string name="openShopFull">Откройте магазин, чтобы создать самый успешный в мире бизнес! </string>
+    <string name="SpecifyPrice">Укажите цену</string>
 </resources>

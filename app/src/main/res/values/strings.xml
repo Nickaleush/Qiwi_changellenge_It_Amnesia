@@ -5,7 +5,8 @@
     <string name="GenerateQR">Here you can generate QR-code for making purchases with <font color='#FF8C00'> QIWI wallet </font></string>
     <string name="Payment">Payment:</string>
     <string name="QRCode">QR-code</string>
-    <string name="Product">Товар</string>
+    <string name="Product">Product</string>
+    <string name="Add">Add</string>
     <string name="Done">Next</string>
     <string name="PaymentID">Payment Id</string>
     <string name="Amount">Amount:</string>
@@ -51,5 +52,7 @@
     <string name="NOCAMERA">No camera</string>
     <string name="invalid_QR_code">Invalid QR code</string>
     <string name="openShop">Open shop</string>
+    <string name="SpecifyPrice">Specify the price</string>
     <string name="openShopFull">Open shop to build the most successful business in the world!</string>
+
 </resources>
