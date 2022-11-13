@@ -98,4 +98,8 @@ dependencies {
 
     // helper for phoneNumber
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.0'
+
+    // QR Code
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0@aar'
 }

@@ -265,7 +265,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
     override fun onDestroy() {
         super.onDestroy()
         cancelTimer()
-        mBottomSheetDialog.cancel()
+       if(dialogOpened) mBottomSheetDialog.cancel()
     }
 
     private fun showResendAction() {
