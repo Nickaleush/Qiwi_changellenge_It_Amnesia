@@ -1,7 +1,11 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.activity
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.paymentToken
 import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.scanQR
 import com.google.zxing.Result
@@ -12,10 +16,13 @@ class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
 
     private var mScannerView: ZXingScannerView? = null
 
+    @SuppressLint("ResourceAsColor")
+    @RequiresApi(Build.VERSION_CODES.P)
     public override fun onCreate(state: Bundle?) {
         super.onCreate(state)
         mScannerView = ZXingScannerView(this)
-        setContentView(mScannerView)
+        setContentView(mScannerView )
+
     }
 
     public override fun onResume() {
