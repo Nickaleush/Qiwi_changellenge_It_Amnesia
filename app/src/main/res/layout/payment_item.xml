@@ -2,8 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:paddingStart="18dp"
-    android:paddingEnd="18dp"
-    >
+    android:paddingEnd="18dp">
+
     <ImageView
         android:id="@+id/iconMenu"
         android:layout_width="30dp"
@@ -15,11 +15,11 @@
         android:id="@+id/textMenuItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:textSize="18sp"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/black"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:text="@string/OpenShop" />
+        android:text="@string/OpenShop"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 </LinearLayout>

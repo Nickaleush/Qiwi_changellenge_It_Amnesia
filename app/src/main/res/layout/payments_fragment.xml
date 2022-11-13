@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarPayments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:animateLayoutChanges="true"
         android:alpha="1.0"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
-        android:focusable="true">
+        android:clickable="true"
+        android:focusable="true"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarPayments"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_gravity="center_horizontal"
                 android:clickable="true"
                 android:focusable="true"
-                android:layout_gravity="center_horizontal"
-                app:titleTextColor="@color/black"
-                app:title="@string/Payment"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:navigationIcon="@drawable/navigation_icon_back_foreground"
-                />
+                app:title="@string/Payment"
+                app:titleTextColor="@color/black" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.google.android.material.appbar.AppBarLayout>
 
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/paymentsRecyclerView"

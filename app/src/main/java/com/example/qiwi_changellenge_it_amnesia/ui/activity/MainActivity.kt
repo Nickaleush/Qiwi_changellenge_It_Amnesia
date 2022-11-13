@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseActivity
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
-import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment
-import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.scanQR
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
@@ -22,7 +19,8 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.view = this
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.mainContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         val mainGraph = navController.navInflater.inflate(R.navigation.navigation_graph)
         navController.graph = mainGraph
@@ -38,9 +36,9 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     }
 
     override fun onBackPressed() {
-        if (BaseFragment.backPressedListener!=null) {
+        if (BaseFragment.backPressedListener != null) {
             BaseFragment.backPressedListener!!.onBackPressed()
-        } else  {
+        } else {
             super.onBackPressed()
         }
     }

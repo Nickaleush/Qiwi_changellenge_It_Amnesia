@@ -30,7 +30,6 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.alert_qr_code.*
 import kotlinx.android.synthetic.main.confirmation_create_qr_code.view.*
 import kotlinx.android.synthetic.main.qr_fragment.*
-import kotlinx.coroutines.NonDisposableHandle.parent
 import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -59,8 +58,6 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     private lateinit var imageQRCode: ImageView
 
     private lateinit var tvAccessTime: TextView
-
-//    private lateinit var dialogLayout: View
 
     override fun createComponent() {
         App.instance

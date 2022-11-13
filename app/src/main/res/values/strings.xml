@@ -8,7 +8,7 @@
     <string name="DefaultPhoneNumber">+78000000028</string>
     <string name="EnterPassword"> Enter Password</string>
     <string name="EnterName"> Enter Name</string>
-    <string name="NotRegisteredYet">Not with us yet? <br/> Register </string>
+    <string name="NotRegisteredYet">Not with us yet? <br /> Register </string>
     <string name="Authentication">Authentication</string>
     <string name="Payments">Payments</string>
     <string name="AuthenticationSuccess">You have successfully authenticated!</string>

@@ -5,7 +5,6 @@ import com.example.qiwi_changellenge_it_amnesia.ui.payments.PaymentsPresenter
 import com.example.qiwi_changellenge_it_amnesia.ui.payments.PaymentsPresenterImpl
 import dagger.Module
 
-
 @Module
 interface PaymentsModule {
     @PaymentsScope

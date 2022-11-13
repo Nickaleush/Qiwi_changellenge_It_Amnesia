@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_round_corners_top_white"
-    >
+    android:background="@drawable/background_round_corners_top_white">
 
     <TextView
         android:id="@+id/confirmationTextView"
@@ -95,8 +94,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode" />
 
     <TextView
         android:id="@+id/tv_resendAccountCode"
@@ -113,6 +111,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendAccountCode" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

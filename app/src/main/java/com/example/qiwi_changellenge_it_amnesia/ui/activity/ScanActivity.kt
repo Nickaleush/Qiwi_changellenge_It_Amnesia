@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.paymentToken
 import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.scanQR
 import com.google.zxing.Result
@@ -40,6 +39,5 @@ class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
         scanQR = true
         paymentToken =rawResult.text
         onBackPressed()
-
     }
 }

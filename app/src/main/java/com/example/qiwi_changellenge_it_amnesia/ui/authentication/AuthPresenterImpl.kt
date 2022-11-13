@@ -8,7 +8,6 @@ import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToLogin
 import com.example.qiwi_changellenge_it_amnesia.domain.models.UserToSignUp
 import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BasePresenterImpl
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -20,6 +19,8 @@ class AuthPresenterImpl @Inject constructor(private val authorizationApi: Author
     lateinit var sharedPreferences: SharedPreferences
 
     override lateinit var view: AuthView
+
+    override fun start() = Unit
 
     @SuppressLint("CheckResult")
     override fun loginWithPhone(user: UserToLogin) {
@@ -63,7 +64,5 @@ class AuthPresenterImpl @Inject constructor(private val authorizationApi: Author
                 view.showError(it.message)
             })
     }
-
-    override fun start() = Unit
 
 }
