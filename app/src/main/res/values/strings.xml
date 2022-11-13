@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">IT-амнезия</string>
     <string name="Welcome">Welcome to the app from team IT-amnesia! </string>
-    <string name="ChooseProduct">Please, select the product you want to purchase</string>
+    <string name="ChooseProduct">Please, select the product you want to sell</string>
     <string name="GenerateQR">Here you can generate QR-code for making purchases with <font color='#FF8C00'> QIWI wallet </font></string>
     <string name="Payment">Payment:</string>
     <string name="QRCode">QR-code</string>

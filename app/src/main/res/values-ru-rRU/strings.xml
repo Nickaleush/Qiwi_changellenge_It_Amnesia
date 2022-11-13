@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">IT-амнезия</string>
     <string name="Welcome">Добро пожаловать в приложение от команды IT-амнезия! </string>
-    <string name="ChooseProduct">Пожалуйста, выберите товар, который хотите приобрести:</string>
+    <string name="ChooseProduct">Пожалуйста, выберите товар, который хотите продать:</string>
     <string name="GenerateQR">Здесь вы можете сгенерировать QR-код для оплаты покупок с помощью <font color='#FF8C00'> QIWI кошелька </font> </string>
     <string name="Payment">Платеж:</string>
     <string name="Product">Product</string>

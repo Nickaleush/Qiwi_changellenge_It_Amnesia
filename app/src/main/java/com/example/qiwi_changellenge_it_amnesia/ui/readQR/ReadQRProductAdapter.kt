@@ -29,9 +29,11 @@ class ReadQRProductAdapter(private val productList: MutableList<Product>, privat
         val v = holder.itemView
         val item = productList[position]
         v.productName.text = item.amount
-        v.productImage.setImageResource(iconList[position])
-        if(position>iconList.size-1) v.productImage.setImageResource(R.drawable.default_product_foreground)
-
+        if  (position>iconList.size-1) v.productImage.setImageResource(R.drawable.default_product_foreground)
+        else v.productImage.setImageResource(iconList[position])
+        if  (position == 0) {
+            v.productName.visibility = View.GONE
+        }
     }
 
     interface OnClickListener {

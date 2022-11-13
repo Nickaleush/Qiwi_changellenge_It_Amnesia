@@ -28,12 +28,6 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
 
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
-    private lateinit var editTextAddItem: EditText
-
-    private lateinit var buttonSendAddItem: Button
-
-    private lateinit var finalAlertDialog:AlertDialog
-
     override fun createComponent() {
         App.instance
             .getAppComponent()
@@ -57,29 +51,29 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
         if (this.isVisible) {
             exampleProductsRecyclerView.layoutManager as GridLayoutManager
             val productList: MutableList<Product> = mutableListOf(Product( "1000"),Product("500"), Product("1999"), Product("7499") )
-            val imageListPetTypes = intArrayOf(R.drawable.car_foreground, R.drawable.motorcycle_foreground, R.drawable.rocket_foreground, R.drawable.robot_foreground )
+            val imageListPetTypes = intArrayOf(R.drawable.add_product_foreground, R.drawable.motorcycle_foreground, R.drawable.rocket_foreground, R.drawable.robot_foreground )
             val adapter = ReadQRProductAdapter(productList,imageListPetTypes)
             exampleProductsRecyclerView.adapter = adapter
             adapter.setOnClickRecyclerListener(object : ReadQRProductAdapter.OnClickListener {
                 override fun onClick(position: Int) {
-                    if (position == 0){
-                        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.ThemeOverlay_AppCompat_Light)
+                    if (position == 0) {
+                        alertDialogBuilder = AlertDialog.Builder(requireContext())
                         val inflater = layoutInflater
                         val dialogLayout = inflater.inflate(R.layout.add_item, null)
-                        editTextAddItem = dialogLayout.findViewById(R.id.editTextAddItem)
+                        val editText  = dialogLayout.findViewById<EditText>(R.id.editTextInformation)
                         alertDialogBuilder.setView(dialogLayout)
-                        alertDialogBuilder.setCancelable(false)
-                        buttonSendAddItem = dialogLayout.findViewById(R.id.buttonSendAddItem)
-                        finalAlertDialog = alertDialogBuilder.create()
-                        finalAlertDialog.show()
-                        buttonSendAddItem.setOnClickListener {
-                            productList.add(productList.size, Product(editTextAddItem.text.toString()))
-                            finalAlertDialog.cancel()
+                        alertDialogBuilder.setTitle(getString(R.string.SpecifyPrice))
+                        alertDialogBuilder.setPositiveButton("OK") { _, _ ->
+                            productList.add(productList.size, Product(editText.text.toString()))
+                            adapter.notifyItemChanged(productList.size)
+                            return@setPositiveButton
                         }
+                        alertDialogBuilder.show()
+                    } else {
+                        amount = productList[position].amount
+                        val intent = Intent(requireActivity(), ScanActivity::class.java)
+                        startActivity(intent)
                     }
-                    amount = productList[position].amount
-                    val intent = Intent(requireActivity(), ScanActivity::class.java)
-                    startActivity(intent)
                 }
             })
         }
