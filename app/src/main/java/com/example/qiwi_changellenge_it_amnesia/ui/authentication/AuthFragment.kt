@@ -1,7 +1,9 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.authentication
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -36,6 +38,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import android.provider.ContactsContract.CommonDataKinds.Phone
+import androidx.core.app.ActivityCompat
 
 class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
@@ -83,10 +86,18 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         }
 
         numberFromContactsImageView.setOnClickListener {
-            val uri = Uri.parse("content://contacts")
-            val intent = Intent(Intent.ACTION_PICK, uri)
-            intent.type = Phone.CONTENT_TYPE
-            startActivityForResult(intent, REQUEST_CODE)
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_CONTACTS
+                ) != PackageManager.PERMISSION_GRANTED){
+                val permissions = arrayOf(Manifest.permission.READ_CONTACTS)
+                ActivityCompat.requestPermissions(requireActivity(), permissions,0)
+            } else {
+                val uri = Uri.parse("content://contacts")
+                val intent = Intent(Intent.ACTION_PICK, uri)
+                intent.type = Phone.CONTENT_TYPE
+                startActivityForResult(intent, REQUEST_CODE)
+            }
         }
 
         textViewRegister.setOnClickListener {
