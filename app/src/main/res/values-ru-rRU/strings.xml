@@ -37,4 +37,8 @@
     <string name="resend_two_min">Отправить код через:</string>
     <string name="paymentTime">Время для оплаты:</string>
     <string name="dismiss">Закрыть</string>
+    <string name="SCANBARCODE">Сканировать QR-код</string>
+    <string name="NOCAMERA">Нет камеры</string>
+    <string name="invalid_QR_code">Неверный QR-code</string>
+    <string name="createShop">Создайте магазин</string>
 </resources>

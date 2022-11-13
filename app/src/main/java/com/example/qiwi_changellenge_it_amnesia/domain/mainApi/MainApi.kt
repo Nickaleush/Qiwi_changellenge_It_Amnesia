@@ -22,4 +22,10 @@ interface MainApi {
 
     @GET("api/payments/sales")
     fun getSalesList(): Single<ArrayList<Payment>>
+
+    @POST("api/shop/account")
+    fun sendTransaction(@Body paymentBody: PaymentBody): Single<Unit>
+
+    @POST("api/client/account/shop")
+    fun createShopAccount(@Body shopName: ShopName): Single<AccessToken>
 }

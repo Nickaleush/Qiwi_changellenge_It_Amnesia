@@ -4,4 +4,5 @@ import com.example.qiwi_changellenge_it_amnesia.mvp.BaseView
 
 interface ReadQRView : BaseView {
     fun showError(message: String?)
+    fun successPay()
 }

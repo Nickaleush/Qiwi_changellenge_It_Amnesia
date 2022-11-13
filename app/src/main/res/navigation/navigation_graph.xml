@@ -32,6 +32,9 @@
             android:id="@+id/action_profileFragment_to_paymentsFragment"
             app:destination="@id/paymentsFragment" />
         <action
+            android:id="@+id/action_profileFragment_to_readQRFragment"
+            app:destination="@id/readQRFragment" />
+        <action
             android:id="@+id/action_profileFragment_to_authFragment"
             app:destination="@id/authFragment" />
     </fragment>

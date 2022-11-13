@@ -35,7 +35,14 @@ class ProfileAdapter(private val items: ArrayList<ListItemProfile> = ArrayList()
                 holder.itemView.iconMenu.setImageResource(R.drawable.add_shop_foreground)
                 holder.itemView.textMenuItem.setText(R.string.OpenShop)
                 holder.itemView.setOnClickListener {
-//                    fragment.openUsefulInfoFragment()
+                    fragment.openCreateShopDialog()
+                }
+            }
+            ItemType.OpenReadQRFragment ->  {
+                holder.itemView.iconMenu.setImageResource(R.drawable.qr_code_foreground)
+                holder.itemView.textMenuItem.setText(R.string.SCANBARCODE)
+                holder.itemView.setOnClickListener {
+                    fragment.openReadQRFragment()
                 }
             }
         }

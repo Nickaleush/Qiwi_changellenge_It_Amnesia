@@ -36,4 +36,8 @@
     <string name="resend_two_min">Resend confirmation code in:</string>
     <string name="paymentTime">Payment time:</string>
     <string name="dismiss">Dismiss</string>
+    <string name="SCANBARCODE">Skan QR-kode</string>
+    <string name="NOCAMERA">No camera</string>
+    <string name="invalid_QR_code">Invalid QR code</string>
+    <string name="createShop">Create shop</string>
 </resources>
