@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_authFragment_to_QRFragment"
             app:destination="@id/QRFragment" />
+        <action
+            android:id="@+id/action_authFragment_to_readQRFragment"
+            app:destination="@id/readQRFragment" />
     </fragment>
     <fragment
         android:id="@+id/QRFragment"

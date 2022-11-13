@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseActivity
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
+import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment
+import com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment.Companion.scanQR
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
