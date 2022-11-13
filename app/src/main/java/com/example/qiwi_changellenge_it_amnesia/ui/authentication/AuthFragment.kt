@@ -266,6 +266,7 @@ class AuthFragment : BaseFragment<AuthPresenterImpl>(), AuthView {
         )
 
         buttonDone.setOnClickListener {
+            remainSeconds = 120
             val phoneNumber = phoneEditText.text.toString().replace(" ", "")
             val finalPhoneNumber = phoneNumber.replace("-", "")
             pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()

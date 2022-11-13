@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +74,8 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         presenter.view = this
         btn_createQR.setOnClickListener {
             try {
+                remainSec = 120
+                alertDialogOpen = false
                 presenter.sendPaymentConfirmation()
             } catch (e: WriterException) {
                 e.printStackTrace()
@@ -139,10 +140,6 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private fun showResendAction() {
         requireActivity().runOnUiThread {
-//            if(alertDialogOpen){
-//                val parent = requireView().parent as ViewGroup
-//                parent.removeViewInLayout(dialogLayout)
-//            }
             etTextConfirmCode.visibility = View.VISIBLE
             tvWrongCodeError.visibility = View.GONE
             tvRepeatSendCode.visibility = View.GONE
