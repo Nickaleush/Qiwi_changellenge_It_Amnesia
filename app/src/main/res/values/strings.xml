@@ -1,24 +1,32 @@
 <resources>
     <string name="app_name">IT-амнезия</string>
-    <string name="Payment">Payment</string>
+    <string name="Welcome">Welcome to the app from team IT-amnesia! </string>
+    <string name="ChooseProduct">Please, select the product you want to purchase</string>
+    <string name="GenerateQR">Here you can generate QR-code for making purchases with <font color='#FF8C00'> QIWI wallet </font></string>
+    <string name="Payment">Payment:</string>
+    <string name="QRCode">QR-code</string>
+    <string name="Product">Товар</string>
     <string name="Done">Next</string>
     <string name="PaymentID">Payment Id</string>
-    <string name="Amount">Amount</string>
+    <string name="Amount">Amount:</string>
     <string name="Currency">Currency</string>
     <string name="LogOut">Log out</string>
     <string name="EnterNumber"> Enter phone number</string>
     <string name="EmptyList"> You don\'t have successful operations</string>
-    <string name="ShopName"> Shop name</string>
-    <string name="PurchaserName">Purchaser Name</string>
-    <string name="PaymentTime"> Payment Time</string>
+    <string name="ShopName">Shop name</string>
+    <string name="Shop">Shop:</string>
+    <string name="PurchaserName">Purchaser:</string>
+    <string name="PaymentTime"> Date:</string>
     <string name="QiwiPhoneNumber">QIWI wallet number</string>
     <string name="DefaultPhoneNumber">+78000000028</string>
     <string name="EnterPassword"> Enter Password</string>
     <string name="EnterName"> Enter Name</string>
+    <string name="OperationHistory">Operation history</string>
     <string name="NotRegisteredYet">Not with us yet? <br/> Register </string>
     <string name="Authentication">Authentication</string>
     <string name="Payments">Payments</string>
     <string name="AuthenticationSuccess">You have successfully authenticated!</string>
+    <string name="OperationSuccess">Operation was successfully completed!</string>
     <string name="SimpleOffers">  <font color='#FF8C00'>Simple and clear about the conditions.</font> </string>
     <string name="ApproveAds"> Agree to receive advertising in accordance with the Offer. Uncheck the box if you don\'t want to receive the ads. </string>
     <string name="Help">  <font color='#FF8C00'>Help</font> </string>
@@ -26,7 +34,7 @@
     <string name="seven">+7</string>
     <string name="Profile">Profile</string>
     <string name="Login">Login</string>
-    <string name="CreateQR">Create</string>
+    <string name="CreateQR">Generate QR-Code</string>
     <string name="OpenShop">Open Shop</string>
     <string name="PaymentHistory">Payment history</string>
     <string name="SalesHistory">Sales history \n (For shop owners)</string>

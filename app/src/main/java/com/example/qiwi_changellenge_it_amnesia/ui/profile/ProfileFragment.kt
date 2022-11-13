@@ -131,6 +131,7 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
     }
 
     override fun onBackPressed() {
+        SHOP_OPENED = false
         requireActivity().finish()
     }
 

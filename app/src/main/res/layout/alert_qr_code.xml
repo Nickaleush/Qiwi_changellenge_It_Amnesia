@@ -4,8 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center"
-    >
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/image_qrCode"
@@ -25,4 +24,5 @@
         android:textSize="14sp"
         android:textStyle="normal"
         tools:text="Payment time: 0:45" />
+
 </LinearLayout>

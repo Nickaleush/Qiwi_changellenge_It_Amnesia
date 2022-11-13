@@ -27,6 +27,7 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
+                view.showProgressDialog()
                 view.startConfirmationCreateQRCode()
             }, {
                 view.showError(it.message)
@@ -43,6 +44,7 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
             .subscribe({
                 sharedPreferences.accessToken = it.accessToken
                 view.showUserCodeError()
+                view.showProgressDialog()
                 view.closeConfirmAndDrawQR(it.paymentToken)
             }, {
                 view.showError(it.message)

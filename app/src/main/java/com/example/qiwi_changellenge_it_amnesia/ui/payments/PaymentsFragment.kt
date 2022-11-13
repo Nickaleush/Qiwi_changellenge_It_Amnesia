@@ -57,7 +57,11 @@ class PaymentsFragment:  BaseFragment<PaymentsPresenterImpl>(), PaymentsView {
     override fun initRecyclerViewPurchaseList(purchaseList: ArrayList<Payment>) {
         if (purchaseList.isEmpty()) {
             emptyListTextView.visibility = View.VISIBLE
-        } else emptyListTextView.visibility = View.GONE
+            emptyListImageView.visibility = View.VISIBLE
+        } else {
+            emptyListTextView.visibility = View.GONE
+            emptyListImageView.visibility = View.GONE
+        }
         paymentsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         val adapter = PaymentsAdapter(purchaseList)
         paymentsRecyclerView.adapter = adapter

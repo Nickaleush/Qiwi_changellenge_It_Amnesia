@@ -13,9 +13,7 @@
         <action
             android:id="@+id/action_authFragment_to_QRFragment"
             app:destination="@id/QRFragment" />
-        <action
-            android:id="@+id/action_authFragment_to_readQRFragment"
-            app:destination="@id/readQRFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/QRFragment"
@@ -53,5 +51,9 @@
         android:name="com.example.qiwi_changellenge_it_amnesia.ui.readQR.ReadQRFragment"
         android:label="ReadQRFragment"
         tools:layout="@layout/read_qr_fragment"
-        />
+        >
+        <action
+            android:id="@+id/action_readQRFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>

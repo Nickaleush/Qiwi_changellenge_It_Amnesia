@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
         <item name="android:windowIsFloating">false</item>
@@ -17,5 +17,15 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="CustomProgressBarTheme">
+
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+
     </style>
 </resources>

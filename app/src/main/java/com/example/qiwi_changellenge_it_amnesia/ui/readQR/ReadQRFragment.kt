@@ -9,9 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.domain.models.PaymentBody
+import com.example.qiwi_changellenge_it_amnesia.domain.models.Product
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
 import com.example.qiwi_changellenge_it_amnesia.ui.activity.ScanActivity
 import kotlinx.android.synthetic.main.read_qr_fragment.*
@@ -35,13 +39,27 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
         presenter.start()
         presenter.view = this
         checkPermissionGranted()
-        buttonReadQR.setOnClickListener {
-            val intent = Intent(requireActivity(), ScanActivity::class.java)
-            startActivity(intent)
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        if (this.isVisible) {
+            exampleProductsRecyclerView.layoutManager as GridLayoutManager
+            val productList: MutableList<Product> = mutableListOf(Product( 1000),Product(500), Product(1999), Product(7499) )
+            val imageListPetTypes = intArrayOf(R.drawable.car_foreground, R.drawable.motorcycle_foreground, R.drawable.rocket_foreground, R.drawable.robot_foreground )
+            val adapter = ReadQRProductAdapter(productList,imageListPetTypes)
+            exampleProductsRecyclerView.adapter = adapter
+            adapter.setOnClickRecyclerListener(object : ReadQRProductAdapter.OnClickListener {
+                override fun onClick(position: Int) {
+                    amount = productList[position].amount
+                    val intent = Intent(requireActivity(), ScanActivity::class.java)
+                    startActivity(intent)
+                }
+            })
         }
     }
 
-    private fun checkPermissionGranted(){
+    private fun checkPermissionGranted() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
@@ -53,16 +71,25 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
 
     override fun onResume() {
         super.onResume()
-        if(scanQR && paymentToken.length>20){
-            presenter.sendTransaction(PaymentBody("2000", paymentToken))
+        if(scanQR && paymentToken.length>20) {
+            presenter.sendTransaction(PaymentBody(amount.toString(), paymentToken))
         }
     }
 
-    override fun successPay(){
-        Toast.makeText(activity, "Охуенно" ,Toast.LENGTH_LONG).show()
+    override fun successPay() {
+        MaterialDialog.Builder(requireContext())
+            .content(getString(R.string.OperationSuccess))
+            .titleColor(requireActivity().getColor(R.color.black))
+            .positiveText(R.string.dismiss)
+            .positiveColor(requireActivity().getColor(R.color.mainColor))
+            .onPositive { materialDialog, _ ->
+                materialDialog.dismiss()
+                findNavController().navigate(R.id.action_readQRFragment_to_profileFragment)
+            }.show()
     }
+
     override fun onBackPressed() {
-        requireActivity().finish()
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -70,5 +97,6 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
     companion object{
         var scanQR = false
         var paymentToken = ""
+        var amount: Long = 0
     }
 }

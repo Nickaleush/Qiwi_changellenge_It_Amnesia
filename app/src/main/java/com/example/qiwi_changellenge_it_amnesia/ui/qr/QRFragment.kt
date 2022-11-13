@@ -1,11 +1,14 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.qr
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +19,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
+import com.example.qiwi_changellenge_it_amnesia.domain.models.Product
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
+import com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment
+import com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment.Companion.SHOP_OPENED
+import com.example.qiwi_changellenge_it_amnesia.utils.CustomProgressDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.zxing.BarcodeFormat
@@ -32,6 +41,7 @@ import kotlinx.android.synthetic.main.confirmation_create_qr_code.view.*
 import kotlinx.android.synthetic.main.qr_fragment.*
 import kotlinx.coroutines.NonDisposableHandle.parent
 import rx.android.schedulers.AndroidSchedulers
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -39,6 +49,8 @@ import java.util.concurrent.TimeUnit
 class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private var bitmap: Bitmap? = null
+
+    private val progressCustomDialog by lazy { CustomProgressDialog(requireContext()) }
 
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
@@ -167,6 +179,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     }
 
     override fun startConfirmationCreateQRCode() {
+        progressCustomDialog.stop()
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_qr_code, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
         mBottomSheetDialog.setContentView(sheetView)
@@ -205,9 +218,9 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         bitmap = textToImageEncode(paymentToken)
         drawQRCode()
     }
-    private fun drawQRCode() {
-        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.ThemeOverlay_AppCompat_Light)
 
+    private fun drawQRCode() {
+        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.Theme_AppCompat_Light_NoActionBar)
         alertDialogBuilder.setPositiveButton(R.string.dismiss){ _, _ ->
                 return@setPositiveButton
             }
@@ -223,7 +236,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         setupTimer()
         val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_main_icon)
         imageQRCode.setImageBitmap(bitmap)
-
+        progressCustomDialog.stop()
     }
 
     @Throws(WriterException::class)
@@ -235,7 +248,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
                 BarcodeFormat.QR_CODE,
                 QRcodeWidth, QRcodeWidth, null
             )
-        } catch (Illegalargumentexception: IllegalArgumentException) {
+        } catch (IllegalArgumentException: IllegalArgumentException) {
             return null
         }
 
@@ -281,6 +294,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         tvResendCode.visibility = View.GONE
     }
     override fun onBackPressed() {
+        SHOP_OPENED = false
         requireActivity().finish()
     }
 
@@ -290,11 +304,15 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         showInvalidCodeError()
     }
 
+    override fun showProgressDialog() {
+        progressCustomDialog.start()
+    }
+
     companion object{
         private var remainSec = 120
         private var timer: Timer? = null
         var confirmCode = ""
-        const val QRcodeWidth = 1000
+        const val QRcodeWidth = 600
         var alertDialogOpen = false
     }
 }
