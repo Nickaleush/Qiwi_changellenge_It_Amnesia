@@ -17,7 +17,6 @@ import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedP
 import com.example.qiwi_changellenge_it_amnesia.domain.models.ShopName
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
 import com.example.qiwi_changellenge_it_amnesia.ui.authentication.AuthFragment.Companion.pickedPhoneNumber
-import com.example.qiwi_changellenge_it_amnesia.ui.qr.QRFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jakewharton.rxbinding.widget.RxTextView
@@ -33,7 +32,7 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
 
     private var profileRecyclerViewItems: ArrayList<ListItemProfile> = ArrayList()
 
-    private lateinit var menuAdapter: ProfileAdapter
+    private lateinit var profileAdapter: ProfileAdapter
 
     private lateinit var sheetView: View
 
@@ -53,11 +52,13 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
         presenter.view = this
         qiwiPhoneTextView.text = pickedPhoneNumber
         recyclerViewProfile.layoutManager = LinearLayoutManager(requireContext())
-        menuAdapter = ProfileAdapter(profileRecyclerViewItems, this@ProfileFragment,requireContext())
-        recyclerViewProfile.adapter = menuAdapter
+        profileAdapter = ProfileAdapter(profileRecyclerViewItems, this@ProfileFragment,requireContext())
+        recyclerViewProfile.adapter = profileAdapter
         initializeData()
         buttonLogOut.setOnClickListener {
             sharedPreferences.accessToken = null
+            SALES_OPENED = false
+            SHOP_OPENED = false
             findNavController().navigate(R.id.action_profileFragment_to_authFragment)
         }
     }
@@ -71,12 +72,23 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
 
     private fun initializeData() {
         profileRecyclerViewItems.clear()
-        profileRecyclerViewItems.add(ListItemProfile(ItemType.AnalyzePayments))
-        profileRecyclerViewItems.add(ListItemProfile(ItemType.OpenShop))
-        profileRecyclerViewItems.add(ListItemProfile(ItemType.OpenReadQRFragment))
+        if (SHOP_OPENED) {
+            profileRecyclerViewItems.add(ListItemProfile(ItemType.AnalyzePayments))
+            profileRecyclerViewItems.add(ListItemProfile(ItemType.AnalyzeSales))
+            profileRecyclerViewItems.add(ListItemProfile(ItemType.OpenReadQRFragment))
+        } else {
+            profileRecyclerViewItems.add(ListItemProfile(ItemType.AnalyzePayments))
+            profileRecyclerViewItems.add(ListItemProfile(ItemType.OpenShop))
+        }
     }
 
-    fun openAnalyzePaymentFragment() {
+    fun openPurchaseHistory() {
+        SALES_OPENED = false
+        findNavController().navigate(R.id.action_profileFragment_to_paymentsFragment)
+    }
+
+    fun openSalesHistory() {
+        SALES_OPENED = true
         findNavController().navigate(R.id.action_profileFragment_to_paymentsFragment)
     }
 
@@ -102,19 +114,31 @@ class ProfileFragment: BaseFragment<ProfilePresenterImpl>(), ProfileView {
             presenter.createShopAccount(ShopName(shopName))
         }
     }
+
     fun openReadQRFragment(){
         findNavController().navigate(R.id.action_profileFragment_to_readQRFragment)
     }
+
     override fun closeBottomSheetDialog(){
         mBottomSheetDialog.dismiss()
     }
+
+    override fun updateData() {
+        for ( i in  1 .. 2) {
+            profileAdapter.notifyItemChanged(1)
+        }
+        initializeData()
+    }
+
     override fun onBackPressed() {
         requireActivity().finish()
     }
 
     override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
-    companion object{
+    companion object {
         var shopName = ""
+        var SHOP_OPENED = false
+        var SALES_OPENED = false
     }
 }

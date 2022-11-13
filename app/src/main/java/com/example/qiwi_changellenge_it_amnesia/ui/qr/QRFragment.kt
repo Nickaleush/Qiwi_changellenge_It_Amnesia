@@ -60,6 +60,8 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private lateinit var tvAccessTime: TextView
 
+    private lateinit var finalAlertDialog:AlertDialog
+
 //    private lateinit var dialogLayout: View
 
     override fun createComponent() {
@@ -76,6 +78,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         super.onViewCreated(view, savedInstanceState)
         presenter.start()
         presenter.view = this
+
         btn_createQR.setOnClickListener {
             try {
                 presenter.sendPaymentConfirmation()
@@ -142,10 +145,10 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private fun showResendAction() {
         requireActivity().runOnUiThread {
-//            if(alertDialogOpen){
-//                val parent = requireView().parent as ViewGroup
-//                parent.removeViewInLayout(dialogLayout)
-//            }
+            if (alertDialogOpen) {
+                finalAlertDialog.dismiss()
+                alertDialogOpen = false
+            }
             etTextConfirmCode.visibility = View.VISIBLE
             tvWrongCodeError.visibility = View.GONE
             tvRepeatSendCode.visibility = View.GONE
@@ -166,10 +169,8 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     override fun startConfirmationCreateQRCode() {
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_qr_code, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
-
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
-
         val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         etTextConfirmCode  = sheetView.findViewById(R.id.editTextConfirmCode)
@@ -183,6 +184,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         btnSendConfirmCode.setOnClickListener {
             presenter.confirmPayment(Code(confirmCode))
         }
+
         RxTextView.textChanges(etTextConfirmCode)
             .debounce(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -196,7 +198,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
             }, Throwable::printStackTrace)
     }
 
-    override fun closeConfirmAndDrawQR(paymentToken: String){
+    override fun closeConfirmAndDrawQR(paymentToken: String) {
         mBottomSheetDialog.dismiss()
         remainSec = 15
         timer?.cancel()
@@ -215,9 +217,8 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         tvAccessTime = dialogLayout.findViewById(R.id.textViewAccessTime)
         alertDialogBuilder.setView(dialogLayout)
         alertDialogBuilder.setCancelable(false)
-
-        alertDialogBuilder.show()
-
+         finalAlertDialog = alertDialogBuilder.create()
+        finalAlertDialog.show()
         alertDialogOpen = true
         setupTimer()
         val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_main_icon)
@@ -272,6 +273,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         canvas.drawBitmap(overlay, centreX, centreY, null)
         return combined
     }
+
     private fun showInvalidCodeError() {
         etTextConfirmCode.background = ResourcesCompat.getDrawable(resources,R.drawable.bottom_line_edit_text_red, null)
         tvWrongCodeError.visibility = View.VISIBLE

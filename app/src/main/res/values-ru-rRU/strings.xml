@@ -28,6 +28,8 @@
     <string name="Authentication">Авторизация</string>
     <string name="AuthenticationSuccess">Вы успешно авторизированы!</string>
     <string name="Login">Авторизация</string>
+    <string name="SalesHistory">История продаж \n(Для владельцев магазина)</string>
+    <string name="EmptyList">Пока что у вас нет совершенных платежей</string>
     <string name="CreateQR">Сгенерировать QR-Code</string>
     <string name="Confirm">Подтвердить</string>
     <string name="ConfirmCodeQRSent">Для создания QR-кода для оплаты покупки введите код подтверждения, отправленный на ваш номер телефона</string>
@@ -40,5 +42,6 @@
     <string name="SCANBARCODE">Сканировать QR-код</string>
     <string name="NOCAMERA">Нет камеры</string>
     <string name="invalid_QR_code">Неверный QR-code</string>
-    <string name="createShop">Создайте магазин</string>
+    <string name="openShop">Создайте магазин</string>
+    <string name="openShopFull">Откройте магазин, чтобы создать самый успешный в мире бизнес! </string>
 </resources>

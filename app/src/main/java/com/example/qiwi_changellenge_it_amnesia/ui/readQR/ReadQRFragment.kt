@@ -1,24 +1,16 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.readQR
 
-import android.R.attr
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
-import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
-import android.app.Activity.RESULT_CANCELED
-
-import android.R.attr.data
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.domain.models.PaymentBody
 import com.example.qiwi_changellenge_it_amnesia.utils.Device
 import com.google.zxing.integration.android.IntentIntegrator
-
 
 class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
 
@@ -46,6 +38,7 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
                 Toast.LENGTH_LONG).show()
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK) {
@@ -65,11 +58,13 @@ class ReadQRFragment: BaseFragment<ReadQRPresenterImpl>(), ReadQRView {
             }
         }
     }
-    override fun successPay(){
+
+    override fun successPay() {
         Toast.makeText(activity, "Охуенно" ,Toast.LENGTH_LONG).show()
     }
+
     override fun onBackPressed() {
-        requireActivity().finish()
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

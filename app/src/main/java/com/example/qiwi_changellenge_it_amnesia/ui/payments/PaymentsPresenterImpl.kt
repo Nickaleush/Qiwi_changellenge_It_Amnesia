@@ -30,7 +30,7 @@ class PaymentsPresenterImpl @Inject constructor(private val mainApi: MainApi) : 
     }
 
     @SuppressLint("CheckResult")
-    override fun getSalesList(){
+    override fun getSalesList() {
         mainApi.getSalesList()
             .subscribeOn(Schedulers.io())
             .observeOn(

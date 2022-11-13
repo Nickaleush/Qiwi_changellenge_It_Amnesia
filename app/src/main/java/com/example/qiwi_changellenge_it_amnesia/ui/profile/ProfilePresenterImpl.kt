@@ -2,10 +2,10 @@ package com.example.qiwi_changellenge_it_amnesia.ui.profile
 
 import android.annotation.SuppressLint
 import com.example.qiwi_changellenge_it_amnesia.domain.mainApi.MainApi
-import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
 import com.example.qiwi_changellenge_it_amnesia.domain.models.ShopName
 import com.example.qiwi_changellenge_it_amnesia.domain.sharedPreferences.SharedPreferences
 import com.example.qiwi_changellenge_it_amnesia.mvp.BasePresenterImpl
+import com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment.Companion.SHOP_OPENED
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -28,8 +28,10 @@ class ProfilePresenterImpl @Inject constructor(private val mainApi: MainApi) : B
             .subscribe({
                 sharedPreferences.accessToken = it.token
                 view.closeBottomSheetDialog()
-                //view.navToUserProfileFragment()
+                SHOP_OPENED = true
+                view.updateData()
             }, {
+                SHOP_OPENED = false
                 view.showError(it.message)
             })
     }

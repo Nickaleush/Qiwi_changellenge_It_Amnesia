@@ -27,7 +27,6 @@ class QRPresenterImpl @Inject constructor(private val mainApi: MainApi) : BasePr
                 AndroidSchedulers.mainThread()
             )
             .subscribe({
-
                 view.startConfirmationCreateQRCode()
             }, {
                 view.showError(it.message)

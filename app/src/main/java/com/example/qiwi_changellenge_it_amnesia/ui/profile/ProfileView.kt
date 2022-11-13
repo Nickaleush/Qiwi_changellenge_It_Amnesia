@@ -5,4 +5,5 @@ import com.example.qiwi_changellenge_it_amnesia.mvp.BaseView
 interface ProfileView : BaseView {
     fun showError(message: String?)
     fun closeBottomSheetDialog()
+    fun updateData()
 }
