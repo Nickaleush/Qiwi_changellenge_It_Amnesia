@@ -1,6 +1,5 @@
 package com.example.qiwi_changellenge_it_amnesia.domain.interceptors
 
-
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

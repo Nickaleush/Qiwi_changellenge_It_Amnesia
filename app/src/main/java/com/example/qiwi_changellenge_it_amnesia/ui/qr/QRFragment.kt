@@ -1,15 +1,11 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.qr
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +14,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.qiwi_changellenge_it_Amnesia.R
 import com.example.qiwi_changellenge_it_amnesia.App
 import com.example.qiwi_changellenge_it_amnesia.domain.models.Code
-import com.example.qiwi_changellenge_it_amnesia.domain.models.Product
 import com.example.qiwi_changellenge_it_amnesia.mvp.BaseFragment
-import com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment
 import com.example.qiwi_changellenge_it_amnesia.ui.profile.ProfileFragment.Companion.SHOP_OPENED
 import com.example.qiwi_changellenge_it_amnesia.utils.CustomProgressDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -36,15 +29,10 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.jakewharton.rxbinding.widget.RxTextView
-import kotlinx.android.synthetic.main.alert_qr_code.*
-import kotlinx.android.synthetic.main.confirmation_create_qr_code.view.*
 import kotlinx.android.synthetic.main.qr_fragment.*
-import kotlinx.coroutines.NonDisposableHandle.parent
 import rx.android.schedulers.AndroidSchedulers
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
@@ -74,7 +62,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     private lateinit var finalAlertDialog:AlertDialog
 
-//    private lateinit var dialogLayout: View
+    private lateinit var buttonCloseAlert: CardView
 
     override fun createComponent() {
         App.instance
@@ -90,9 +78,11 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         super.onViewCreated(view, savedInstanceState)
         presenter.start()
         presenter.view = this
-
         btn_createQR.setOnClickListener {
             try {
+                remainSec = 120
+                alertDialogOpen = false
+                progressCustomDialog.start()
                 presenter.sendPaymentConfirmation()
             } catch (e: WriterException) {
                 e.printStackTrace()
@@ -179,7 +169,6 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
     }
 
     override fun startConfirmationCreateQRCode() {
-        progressCustomDialog.stop()
         sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_qr_code, null)
         mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
         mBottomSheetDialog.setContentView(sheetView)
@@ -195,6 +184,7 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         setupTimer()
 
         btnSendConfirmCode.setOnClickListener {
+            progressCustomDialog.start()
             presenter.confirmPayment(Code(confirmCode))
         }
 
@@ -213,30 +203,29 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
 
     override fun closeConfirmAndDrawQR(paymentToken: String) {
         mBottomSheetDialog.dismiss()
-        remainSec = 15
+        remainSec = 120
         timer?.cancel()
         bitmap = textToImageEncode(paymentToken)
         drawQRCode()
     }
 
     private fun drawQRCode() {
-        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.Theme_AppCompat_Light_NoActionBar)
-        alertDialogBuilder.setPositiveButton(R.string.dismiss){ _, _ ->
-                return@setPositiveButton
-            }
+        alertDialogBuilder = AlertDialog.Builder(requireContext(),R.style.ThemeOverlay_AppCompat_Light)
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.alert_qr_code, null)
         imageQRCode = dialogLayout.findViewById(R.id.image_qrCode)
         tvAccessTime = dialogLayout.findViewById(R.id.textViewAccessTime)
         alertDialogBuilder.setView(dialogLayout)
         alertDialogBuilder.setCancelable(false)
+        buttonCloseAlert = dialogLayout.findViewById(R.id.buttonCloseAlert)
          finalAlertDialog = alertDialogBuilder.create()
         finalAlertDialog.show()
         alertDialogOpen = true
         setupTimer()
-        val overlay = BitmapFactory.decodeResource(resources, R.drawable.small_main_icon)
         imageQRCode.setImageBitmap(bitmap)
-        progressCustomDialog.stop()
+        buttonCloseAlert.setOnClickListener {
+            finalAlertDialog.dismiss()
+        }
     }
 
     @Throws(WriterException::class)
@@ -273,26 +262,15 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         return bitmap
     }
 
-    private fun mergeBitmaps(overlay: Bitmap, bitmap: Bitmap): Bitmap? {
-        val height = bitmap.height
-        val width = bitmap.width
-        val combined = Bitmap.createBitmap(width, height, bitmap.config)
-        val canvas = Canvas(combined)
-        val canvasWidth: Int = canvas.width
-        val canvasHeight: Int = canvas.height
-        canvas.drawBitmap(bitmap, Matrix(), null)
-        val centreX  = ((canvasWidth - overlay.width) / 2).toFloat()
-        val centreY = ((canvasHeight - overlay.height) / 2).toFloat()
-        canvas.drawBitmap(overlay, centreX, centreY, null)
-        return combined
-    }
-
     private fun showInvalidCodeError() {
         etTextConfirmCode.background = ResourcesCompat.getDrawable(resources,R.drawable.bottom_line_edit_text_red, null)
         tvWrongCodeError.visibility = View.VISIBLE
         tvRepeatSendCode.visibility = View.GONE
         tvResendCode.visibility = View.GONE
     }
+
+
+
     override fun onBackPressed() {
         SHOP_OPENED = false
         requireActivity().finish()
@@ -304,15 +282,15 @@ class QRFragment: BaseFragment<QRPresenterImpl>(), QRFragmentView  {
         showInvalidCodeError()
     }
 
-    override fun showProgressDialog() {
-        progressCustomDialog.start()
+    override fun hideProgressDialog() {
+        progressCustomDialog.stop()
     }
 
-    companion object{
+    companion object {
         private var remainSec = 120
         private var timer: Timer? = null
         var confirmCode = ""
-        const val QRcodeWidth = 600
+        const val QRcodeWidth = 1000
         var alertDialogOpen = false
     }
 }

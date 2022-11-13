@@ -37,5 +37,6 @@ class PaymentsAdapter(private val purchaseList: ArrayList<Payment> ) : RecyclerV
         val formattedDate = outputFormat.format(date)
         v.paymentTimeTextview.text = formattedDate
     }
+
     override fun getItemCount() = purchaseList.size
 }

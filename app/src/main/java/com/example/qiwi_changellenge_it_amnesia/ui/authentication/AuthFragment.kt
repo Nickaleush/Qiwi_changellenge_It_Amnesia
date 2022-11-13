@@ -1,7 +1,9 @@
 package com.example.qiwi_changellenge_it_amnesia.ui.authentication
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -36,9 +38,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import android.provider.ContactsContract.CommonDataKinds.Phone
-import android.view.View.OnFocusChangeListener
+import androidx.core.app.ActivityCompat
 
-class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
+class AuthFragment : BaseFragment<AuthPresenterImpl>(), AuthView {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -59,8 +61,6 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
     private val REQUEST_CODE = 1
 
-    var isKeyboardOpened = false
-
     override fun createComponent() {
         App.instance
             .getAppComponent()
@@ -68,7 +68,11 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.auth_login, container, false)
     }
 
@@ -77,19 +81,30 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
         presenter.start()
         presenter.view = this
         countryCodeTextView.setOnClickListener {
-            CCPicker.showPicker(requireActivity(), object : CountryPickerAdapter.OnCountrySelectedListener {
-                override fun onCountrySelected(country: Country?) {
-                    val countryCode = country?.countryCode
-                    countryCodeTextView.setText(countryCode)
-                }
-            })
+            CCPicker.showPicker(
+                requireActivity(),
+                object : CountryPickerAdapter.OnCountrySelectedListener {
+                    override fun onCountrySelected(country: Country?) {
+                        val countryCode = country?.countryCode
+                        countryCodeTextView.setText(countryCode)
+                    }
+                })
         }
 
         numberFromContactsImageView.setOnClickListener {
-            val uri = Uri.parse("content://contacts")
-            val intent = Intent(Intent.ACTION_PICK, uri)
-            intent.type = Phone.CONTENT_TYPE
-            startActivityForResult(intent, REQUEST_CODE)
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_CONTACTS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                val permissions = arrayOf(Manifest.permission.READ_CONTACTS)
+                ActivityCompat.requestPermissions(requireActivity(), permissions, 0)
+            } else {
+                val uri = Uri.parse("content://contacts")
+                val intent = Intent(Intent.ACTION_PICK, uri)
+                intent.type = Phone.CONTENT_TYPE
+                startActivityForResult(intent, REQUEST_CODE)
+            }
         }
 
         textViewRegister.setOnClickListener {
@@ -101,6 +116,7 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             constraintSetSignUpForm.applyTo(auth_fragment_layout)
             passwordEditText.fadeIn( 400).mergeWith(editTextName.fadeIn( 400)).subscribe()
+
         }
 
         buttonDone.setOnClickListener {
@@ -110,49 +126,157 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             changeConstraintsLogin(constraintSetLoginForm)
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             constraintSetLoginForm.applyTo(auth_fragment_layout)
-            passwordEditText.fadeIn( 400).subscribe()
+            passwordEditText.fadeIn(400).subscribe()
         }
 
         confirmCodeAccount = savedInstanceState?.getString("code").toString()
-
     }
 
-    override fun onBackPressed() {
-        requireActivity().finish()
+    override fun showConfirmationDialog() {
+        sheetView =
+            requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
+        mBottomSheetDialog =
+            BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
+        dialogOpened = true
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.setCancelable(false)
+        mBottomSheetDialog.show()
+        val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
+        mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        tvWrongCodeError = sheetView.findViewById(R.id.tv_wrongAccountCodeError)
+        etTextConfirmCode = sheetView.findViewById(R.id.editTextConfirmAccountCode)
+        tvRepeatSendCode = sheetView.findViewById(R.id.textViewRepeatSendAccountCode)
+        tvResendCode = sheetView.findViewById(R.id.tv_resendAccountCode)
+        buttonSendConfirmAccountCode = sheetView.findViewById(R.id.buttonSendConfirmAccountCode)
+
+        setupTimer()
+        buttonSendConfirmAccountCode.setOnClickListener {
+            presenter.confirmAccount(Code(confirmCodeAccount))
+        }
+
+        RxTextView.textChanges(etTextConfirmCode)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                confirmCodeAccount = it.toString()
+                if (tvWrongCodeError.visibility == View.VISIBLE) {
+                    tvWrongCodeError.visibility = View.GONE
+                    tvRepeatSendCode.visibility = View.VISIBLE
+                    etTextConfirmCode.setBackgroundResource(R.drawable.bottom_line_edit_text)
+                }
+            }, Throwable::printStackTrace)
     }
 
-    override fun showError(message: String?): Unit = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun setupTimer() {
+        if (remainSeconds > 0) {
+            startTime(remainSeconds)
+        } else if (remainSeconds == 0) {
+            showResendAction()
+        }
+    }
 
-    override fun navToUserProfileFragment() {
-        if (dialogOpened) { mBottomSheetDialog.dismiss() }
-        Toast.makeText(requireContext(), getString(R.string.AuthenticationSuccess), Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_authFragment_to_QRFragment)
+    private fun startTime(time: Int) {
+        timerConfirmAccount?.cancel()
+        timerConfirmAccount = Timer()
+        timerConfirmAccount?.schedule(ResendCodeTask(time), 0, 1000)
+        tvWrongCodeError.visibility = View.GONE
+        tvRepeatSendCode.visibility = View.VISIBLE
+        tvResendCode.visibility = View.GONE
+    }
+
+    inner class ResendCodeTask(private var timeOutSec: Int) : TimerTask() {
+        override fun run() {
+            if (timeOutSec <= 0) {
+                showResendAction()
+                cancelTimer()
+                cancel()
+                return
+            }
+            updateTimeText(timeOutSec)
+            timeOutSec--
+        }
+    }
+
+    private fun updateTimeText(time: Int) {
+        requireActivity().runOnUiThread {
+            tvRepeatSendCode.text = String.format(
+                "%s %d:%02d",
+                getString(R.string.resend_two_min),
+                time / 60,
+                time % 60
+            )
+        }
+    }
+
+    private fun cancelTimer() {
+        remainSeconds = 0
+        timerConfirmAccount?.cancel()
+    }
+
+    private fun showResendAction() {
+        requireActivity().runOnUiThread {
+            mBottomSheetDialog.setCancelable(true)
+            etTextConfirmCode.visibility = View.VISIBLE
+            tvWrongCodeError.visibility = View.GONE
+            tvRepeatSendCode.visibility = View.GONE
+            tvResendCode.visibility = View.VISIBLE
+        }
     }
 
     private fun changeConstraintsLogin(set: ConstraintSet) {
         set.clear(R.id.textViewReadOffer, ConstraintSet.TOP)
         set.clear(R.id.textViewReadOffer, ConstraintSet.LEFT)
         set.clear(R.id.textViewReadOffer, ConstraintSet.RIGHT)
-        set.connect(R.id.textViewReadOffer, ConstraintSet.TOP, R.id.passwordEditText, ConstraintSet.BOTTOM, 36)
+        set.connect(
+            R.id.textViewReadOffer,
+            ConstraintSet.TOP,
+            R.id.passwordEditText,
+            ConstraintSet.BOTTOM,
+            36
+        )
         buttonDone.setOnClickListener {
             val phoneNumber = phoneEditText.text.toString().replace(" ", "")
             val finalPhoneNumber = phoneNumber.replace("-", "")
             pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
-            presenter.loginWithPhone(UserToLogin(passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
+            presenter.loginWithPhone(
+                UserToLogin(
+                    passwordEditText.text.toString(),
+                    (countryCodeTextView.text.toString() + finalPhoneNumber)
+                )
+            )
         }
     }
 
     private fun changeConstraintsSignUp(set: ConstraintSet) {
         set.clear(R.id.textViewReadOffer, ConstraintSet.TOP)
         set.clear(R.id.passwordEditText, ConstraintSet.TOP)
-        set.connect(R.id.passwordEditText, ConstraintSet.TOP, R.id.editTextName, ConstraintSet.BOTTOM, 36)
-        set.connect(R.id.textViewReadOffer, ConstraintSet.TOP, R.id.passwordEditText, ConstraintSet.BOTTOM, 36)
+        set.connect(
+            R.id.passwordEditText,
+            ConstraintSet.TOP,
+            R.id.editTextName,
+            ConstraintSet.BOTTOM,
+            36
+        )
+        set.connect(
+            R.id.textViewReadOffer,
+            ConstraintSet.TOP,
+            R.id.passwordEditText,
+            ConstraintSet.BOTTOM,
+            36
+        )
 
         buttonDone.setOnClickListener {
+            remainSeconds = 120
             val phoneNumber = phoneEditText.text.toString().replace(" ", "")
             val finalPhoneNumber = phoneNumber.replace("-", "")
             pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
-            presenter.signUpWithPhone(UserToSignUp(editTextName.text.toString(), passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
+            presenter.signUpWithPhone(
+                UserToSignUp(
+                    editTextName.text.toString(),
+                    passwordEditText.text.toString(),
+                    (countryCodeTextView.text.toString() + finalPhoneNumber)
+                )
+            )
         }
 
         textViewRegister.text = getString(R.string.Login)
@@ -170,14 +294,31 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
 
     private fun changeConstraintsBackToLogin(set: ConstraintSet) {
         set.clear(R.id.passwordEditText, ConstraintSet.TOP)
-        set.connect(R.id.passwordEditText, ConstraintSet.TOP, R.id.phoneEditText, ConstraintSet.BOTTOM, 36)
-        set.connect(R.id.textViewReadOffer, ConstraintSet.TOP, R.id.passwordEditText, ConstraintSet.BOTTOM, 36)
+        set.connect(
+            R.id.passwordEditText,
+            ConstraintSet.TOP,
+            R.id.phoneEditText,
+            ConstraintSet.BOTTOM,
+            36
+        )
+        set.connect(
+            R.id.textViewReadOffer,
+            ConstraintSet.TOP,
+            R.id.passwordEditText,
+            ConstraintSet.BOTTOM,
+            36
+        )
 
         buttonDone.setOnClickListener {
-            val phoneNumber = phoneEditText.text.toString().replace("-","")
+            val phoneNumber = phoneEditText.text.toString().replace("-", "")
             val finalPhoneNumber = phoneNumber.replace(" ", "")
             pickedPhoneNumber = countryCodeTextView.text.toString() + phoneEditText.text.toString()
-            presenter.loginWithPhone(UserToLogin(passwordEditText.text.toString(),(countryCodeTextView.text.toString()+finalPhoneNumber)))
+            presenter.loginWithPhone(
+                UserToLogin(
+                    passwordEditText.text.toString(),
+                    (countryCodeTextView.text.toString() + finalPhoneNumber)
+                )
+            )
         }
 
         textViewRegister.setOnClickListener {
@@ -188,97 +329,33 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             changeConstraintsSignUp(constraintSetSignUpForm)
             TransitionManager.beginDelayedTransition(auth_fragment_layout)
             constraintSetSignUpForm.applyTo(auth_fragment_layout)
-            passwordEditText.fadeIn( 400).mergeWith(editTextName.fadeIn( 400)).subscribe()
+            passwordEditText.fadeIn(400).mergeWith(editTextName.fadeIn(400)).subscribe()
         }
     }
 
-    override fun showConfirmationDialog() {
-        sheetView = requireActivity().layoutInflater.inflate(R.layout.confirmation_create_account, null)
-        mBottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialogTheme)
-        dialogOpened = true
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.setCancelable(false)
-        mBottomSheetDialog.show()
-        val mBehavior = BottomSheetBehavior.from(sheetView.parent as View)
-        mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        tvWrongCodeError  = sheetView.findViewById(R.id.tv_wrongAccountCodeError)
-        etTextConfirmCode  = sheetView.findViewById(R.id.editTextConfirmAccountCode)
-        tvRepeatSendCode  = sheetView.findViewById(R.id.textViewRepeatSendAccountCode)
-        tvResendCode  = sheetView.findViewById(R.id.tv_resendAccountCode)
-        buttonSendConfirmAccountCode  = sheetView.findViewById(R.id.buttonSendConfirmAccountCode)
+    override fun showError(message: String?): Unit =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
-        setupTimer()
-        buttonSendConfirmAccountCode.setOnClickListener {
-            presenter.confirmAccount(Code(confirmCodeAccount))
+    override fun navToUserProfileFragment() {
+        if (dialogOpened) {
+            mBottomSheetDialog.dismiss()
         }
-
-        RxTextView.textChanges(etTextConfirmCode)
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                confirmCodeAccount = it.toString()
-                if(tvWrongCodeError.visibility == View.VISIBLE) {
-                    tvWrongCodeError.visibility = View.GONE
-                    tvRepeatSendCode.visibility = View.VISIBLE
-                    etTextConfirmCode.setBackgroundResource(R.drawable.bottom_line_edit_text)
-                }
-            }, Throwable::printStackTrace)
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.AuthenticationSuccess),
+            Toast.LENGTH_SHORT
+        ).show()
+        findNavController().navigate(R.id.action_authFragment_to_QRFragment)
     }
 
-    private fun setupTimer() {
-        if(remainSeconds > 0) {
-            startTime(remainSeconds)
-        }
-        else if(remainSeconds == 0) {
-            showResendAction()
-        }
-    }
-
-    private  fun startTime(time: Int) {
-        timerConfirmAccount?.cancel()
-        timerConfirmAccount = Timer()
-        timerConfirmAccount?.schedule(ResendCodeTask(time), 0, 1000)
-        tvWrongCodeError.visibility = View.GONE
-        tvRepeatSendCode.visibility = View.VISIBLE
-        tvResendCode.visibility = View.GONE
-    }
-
-    inner class ResendCodeTask(private var timeOutSec: Int): TimerTask() {
-        override fun run() {
-            if(timeOutSec <= 0) {
-                showResendAction()
-                cancelTimer()
-                cancel()
-                return
-            }
-            updateTimeText(timeOutSec)
-            timeOutSec--
-        }
-    }
-
-    private fun updateTimeText(time: Int){
-        requireActivity().runOnUiThread { tvRepeatSendCode.text = String.format("%s %d:%02d", getString(R.string.resend_two_min), time / 60, time % 60)}
-    }
-
-    private fun cancelTimer() {
-        remainSeconds = 0
-        timerConfirmAccount?.cancel()
+    override fun onBackPressed() {
+        requireActivity().finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         cancelTimer()
-       if(dialogOpened) mBottomSheetDialog.cancel()
-    }
-
-    private fun showResendAction() {
-        requireActivity().runOnUiThread {
-            mBottomSheetDialog.setCancelable(true)
-            etTextConfirmCode.visibility = View.VISIBLE
-            tvWrongCodeError.visibility = View.GONE
-            tvRepeatSendCode.visibility = View.GONE
-            tvResendCode.visibility = View.VISIBLE
-        }
+        if (dialogOpened) mBottomSheetDialog.cancel()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -287,10 +364,11 @@ class AuthFragment :  BaseFragment<AuthPresenterImpl>(), AuthView {
             if (resultCode == RESULT_OK) {
                 val uri: Uri = data?.data!!
                 val projection = arrayOf(Phone.NUMBER, Phone.DISPLAY_NAME)
-                val cursor: Cursor? = requireContext().contentResolver.query(uri, projection, null, null, null)
+                val cursor: Cursor? =
+                    requireContext().contentResolver.query(uri, projection, null, null, null)
                 cursor?.moveToFirst()
                 val numberColumnIndex: Int? = cursor?.getColumnIndex(Phone.NUMBER)
-                val number: String? = numberColumnIndex?.let {cursor.getString(it)}
+                val number: String? = numberColumnIndex?.let { cursor.getString(it) }
                 pickedPhoneNumber = if (number?.take(1).equals("+")) number?.takeLast(13).toString()
                 else number?.takeLast(10).toString()
                 phoneEditText.setText(pickedPhoneNumber)

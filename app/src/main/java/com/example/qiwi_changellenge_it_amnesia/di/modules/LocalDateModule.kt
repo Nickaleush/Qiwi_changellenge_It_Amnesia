@@ -14,7 +14,8 @@ internal class LocalDataModule {
 
     @Singleton
     @Provides
-    fun provideSharedPreferences(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    fun provideSharedPreferences(context: Context): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 
     @Singleton
     @Provides

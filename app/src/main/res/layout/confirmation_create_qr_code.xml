@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_round_corners_top_white"
-    >
+    android:background="@drawable/background_round_corners_top_white">
 
     <TextView
         android:id="@+id/confirmationTextView"
@@ -34,7 +33,7 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/mainColor"
         android:imeOptions="actionDone"
-        android:inputType="text"
+        android:inputType="phone"
         android:maxLength="10"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,10 +51,10 @@
         android:layout_marginStart="20dp"
         android:lineSpacingExtra="6sp"
         android:padding="4dp"
-        android:visibility="visible"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="normal"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextConfirmCode"
         tools:text="Resend confirmation code in: 0:45" />
@@ -97,8 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode" />
 
     <TextView
         android:id="@+id/tv_resendCode"
@@ -116,6 +114,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeatSendCode" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
