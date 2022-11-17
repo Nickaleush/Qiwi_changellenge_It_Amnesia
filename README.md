@@ -1,6 +1,6 @@
 # Qiwi_changellenge_It_Amnesia
 
-##WINNER
+## WINNER
 Решение, занявшее 1 место в хакатоне Hack&Change 2022 - Track QIWI
 Презентовав данное приложение, моя команда заняла 1 место в треке от компании QIWI.
 
